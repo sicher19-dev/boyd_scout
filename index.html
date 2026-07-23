@@ -41,6 +41,17 @@ h1 em{font-style:normal;color:var(--day)}
 .gb{font-family:'IBM Plex Mono';font-size:12.5px}
 .gb b{display:block;color:var(--dim);font-weight:500;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px}
 
+
+/* ===== tabs ===== */
+.tabs{position:sticky;top:0;z-index:50;background:rgba(7,10,18,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.tabrow{display:flex;gap:4px;overflow-x:auto;padding:10px 0;-webkit-overflow-scrolling:touch}
+.tab{font-family:'Barlow Condensed';font-weight:700;font-size:16px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);background:none;border:1px solid transparent;border-radius:6px;padding:8px 16px;cursor:pointer;white-space:nowrap;transition:color .15s,background .15s}
+.tab:hover{color:var(--ivory)}
+.tab:focus-visible{outline:2px solid var(--day);outline-offset:2px}
+.tab.active{color:var(--ivory);background:var(--cubs);border-color:var(--line)}
+section{display:none}
+section.active{display:block}
+
 /* ===== sections ===== */
 section{padding:46px 0;border-bottom:1px solid var(--line)}
 h2{font-family:'Barlow Condensed';font-weight:800;font-size:34px;text-transform:uppercase;letter-spacing:.03em;display:flex;align-items:center;gap:14px;margin-bottom:8px}
@@ -112,6 +123,9 @@ svg text{font-family:'IBM Plex Mono';fill:var(--dim)}
 .avoid .tag2{background:rgba(204,52,51,.13);color:#F08A89;border:1px solid rgba(204,52,51,.45)}
 .why{font-size:13px;color:var(--dim)}
 .why b{color:#C9D2E2;font-weight:600}
+.dna{display:flex;gap:10px;align-items:baseline;font-size:13px;color:var(--dim);border-top:1px dashed var(--line);padding-top:9px;margin-top:2px;flex-wrap:wrap}
+.dna .tag2{font-family:'IBM Plex Mono';font-size:10px;letter-spacing:.12em;padding:2px 8px;border-radius:3px;text-transform:uppercase;white-space:nowrap;background:rgba(108,172,228,.12);color:var(--day);border:1px solid rgba(108,172,228,.4)}
+.dna b{color:#C9D2E2;font-weight:600}
 
 /* game plan */
 .plan{display:grid;gap:14px;max-width:840px}
@@ -155,8 +169,21 @@ footer{padding:30px 0 44px;color:var(--dim);font-family:'IBM Plex Mono';font-siz
   </div>
 </header>
 
+<nav class="tabs" aria-label="Report sections">
+  <div class="wrap">
+    <div class="tabrow" role="tablist">
+      <button class="tab active" role="tab" aria-selected="true" data-t="briefing">Briefing</button>
+      <button class="tab" role="tab" aria-selected="false" data-t="overview">Overview</button>
+      <button class="tab" role="tab" aria-selected="false" data-t="arsenal">Arsenal</button>
+      <button class="tab" role="tab" aria-selected="false" data-t="hitters">Hitters</button>
+      <button class="tab" role="tab" aria-selected="false" data-t="plan">Game Plan</button>
+    </div>
+  </div>
+</nav>
+
+
 <!-- ================= BRIEFING ================= -->
-<section id="briefing">
+<section id="briefing" class="active">
   <div class="wrap">
     <h2>The Briefing</h2>
     <p class="lede">Five things. If nothing else survives the bus ride, these do.</p>
@@ -164,7 +191,7 @@ footer{padding:30px 0 44px;color:var(--dim);font-family:'IBM Plex Mono';font-siz
       <div class="bcard"><div class="bnum disp">1</div><p><strong>The changeup is the engine tomorrow, not the fastball.</strong> Against righties this year the change gets a whiff on 28% of swings; the four-seam gets 17% and comes back off the barrel at 95 mph when they touch it. The fastball's job is to be seen up — the changeup's job is to finish down. Same tunnel, 14 mph apart.</p></div>
       <div class="bcard"><div class="bnum disp">2</div><p><strong>The curveball is free strikes.</strong> 40.5% called-strike-plus-whiff against righties and almost nothing on contact (.138 xwOBA). This lineup takes early — drop it in first pitch and get to 0-1 without spending the fastball.</p></div>
       <div class="bcard"><div class="bnum disp">3</div><p><strong>Lefties are already beaten — stay the course.</strong> .200 average, .547 OPS against this season. The slider does it: 49% whiff against left-handed bats. Lowe and O'Hearn get a steady diet of it down and in off the plate.</p></div>
-      <div class="bcard red"><div class="bnum disp">4</div><p><strong>Esmerlyn Valdez is the game.</strong> 1.508 OPS and 7 homers in 46 plate appearances against lefties. He hits lefty fastballs at 101 mph and slugs over 1.100 on lefty sliders. But he whiffs on <strong>69% of his swings at changeups</strong> from southpaws. One rule, three times: changeup, changeup, changeup — and never a slider.</p></div>
+      <div class="bcard red"><div class="bnum disp">4</div><p><strong>Esmerlyn Valdez is the game.</strong> 1.508 OPS and 7 homers in 46 plate appearances against lefties. He hits lefty fastballs at 101 mph and slugs over 1.100 on lefty sliders. But he whiffs on <strong>69% of his swings at changeups</strong> from southpaws. One rule, three times: changeup, changeup, changeup — and never a slider. The swing data says why it works: the fastest bat on the team (75 mph) steepens to <strong>23° uphill against offspeed</strong> — the changeup falls out of a tunnel his path can't bend down to reach.</p></div>
       <div class="bcard"><div class="bnum disp">5</div><p><strong>Second time through, hide the heater.</strong> First-look fastball contact comes back at 92.6 mph. Second look: <strong>100.2 mph</strong>. Flip the script in innings 3–5 — breaking ball first, fastball as the surprise, not the appetizer.</p></div>
     </div>
   </div>
@@ -312,7 +339,7 @@ footer{padding:30px 0 44px;color:var(--dim);font-family:'IBM Plex Mono';font-siz
 <section id="hitters">
   <div class="wrap">
     <h2>The Hitters</h2>
-    <p class="lede">Lineup below is projected from Pittsburgh's actual starting nines against left-handed pitching — the 3-4-5 of Reynolds, Valdez and O'Hearn has been carved in stone in every July game against a lefty. All hitter numbers are 2026 vs LHP.</p>
+    <p class="lede">Lineup below is projected from Pittsburgh's actual starting nines against left-handed pitching — the 3-4-5 of Reynolds, Valdez and O'Hearn has been carved in stone in every July game against a lefty. All hitter numbers — outcomes and swing mechanics — are 2026 vs LHP only. The mechanical headline: <strong style="color:var(--day)">the entire heart of this order swings 19–25° uphill at offspeed</strong>, and the changeup carries 3.6" of ride against paths built for 15. The plans below aren't just outcome patterns — the swings explain them.</p>
 
     <div class="lineupwrap">
       <aside class="lupanel">
@@ -341,6 +368,7 @@ footer{padding:30px 0 44px;color:var(--dim);font-family:'IBM Plex Mono';font-siz
             <div class="aa attack"><span class="tag2">Attack</span><span>Changeup down-and-away, curveball for early strikes.</span></div>
             <div class="aa avoid"><span class="tag2">Avoid</span><span>Trying to blow fastballs past him in the zone — he doesn't miss them.</span></div>
             <p class="why"><b>41% whiff on lefty changeups, 47% on curves</b> — but only 11% on four-seams. Contact is soft (83 mph avg) with zero slug, so fastballs to contact are fine; strikeouts come from the soft stuff.</p>
+            <div class="dna"><span class="tag2">Swing</span><span>69.7 mph bat · flattens to <b>3.6°</b> vs fastballs, steepens to <b>18.6°</b> vs offspeed — the path physically covers the heater and dives under the change. Below-average bat speed caps the damage either way.</span></div>
           </div>
         </div>
 
@@ -350,6 +378,7 @@ footer{padding:30px 0 44px;color:var(--dim);font-family:'IBM Plex Mono';font-siz
             <div class="aa attack"><span class="tag2">Attack</span><span>Fastballs and sliders in the zone — pitch to contact, let the defense eat.</span></div>
             <div class="aa avoid"><span class="tag2">Avoid</span><span>Wasting changeups — it's the only pitch he damages (.418 xwOBAcon).</span></div>
             <p class="why"><b>7% whiff on lefty fastballs, 0% on sliders</b> — you will not strike him out with hard stuff, and you don't need to: 84.6 mph average exit velo, no home runs off lefties. Quick outs live here.</p>
+            <div class="dna"><span class="tag2">Swing</span><span>69.9 mph bat, <b>2.3°</b> vs fastballs — one of the flattest hard-stuff paths on the club. That's why the whiffs aren't there and why the contact can't hurt you. Don't chase the K; chase the out.</span></div>
           </div>
         </div>
 
@@ -359,6 +388,7 @@ footer{padding:30px 0 44px;color:var(--dim);font-family:'IBM Plex Mono';font-siz
             <div class="aa attack"><span class="tag2">Attack</span><span>Elevated four-seams (37% whiff up) and sliders expanding off the outer edge — he chases spin away at 48%.</span></div>
             <div class="aa avoid"><span class="tag2">Avoid</span><span>Curveballs anywhere near the zone — .559 xwOBAcon, 94 mph EV. The strike thief gets pickpocketed here.</span></div>
             <p class="why">The professional at-bat in this lineup. Walks (17 BB), hits everything reasonably well, and punishes lefty breaking balls that catch plate. Work edges, accept the walk in a big spot.</p>
+            <div class="dna"><span class="tag2">Swing</span><span>73.8 mph bat — but watch the split: <b>72.0 vs fastballs at a dead-flat 0.6°</b>, jumping to <b>74–76 with 14° of launch on spin and offspeed</b>. His A-swing is saved for the soft stuff. Elevated ride forces the flat B-swing — misses up are barrel-under, not damage.</span></div>
           </div>
         </div>
 
@@ -368,6 +398,7 @@ footer{padding:30px 0 44px;color:var(--dim);font-family:'IBM Plex Mono';font-siz
             <div class="aa attack"><span class="tag2">Attack</span><span>Changeups, changeups, changeups — down and away, tunneled off the fastball. Ladder four-seams above the eyes with two strikes.</span></div>
             <div class="aa avoid"><span class="tag2">Avoid</span><span>ANY slider (1.136 xwOBAcon — he slugs it out of the yard). Any fastball in the zone (100.9 mph average exit velo).</span></div>
             <p class="why"><b>69% whiff rate on lefty changeups. 47% whiff on elevated fastballs.</b> Everything else from a lefty hand gets launched — a 1.508 OPS is not a small-sample joke when the contact quality backs it up. He is the single decision that swings this start. Three at-bats, one plan, no deviation. Walking him with a base open is a win.</p>
+            <div class="dna"><span class="tag2">Swing</span><span><b>75.0 mph average bat speed — fastest on the team</b>, 7.9-ft swing, max intent (75.6) against fastballs. But the path steepens to <b>22.8° against offspeed</b>: Boyd's changeup rides 3.6" and fades 16" under a swing committed 23° uphill. The 69% whiff isn't luck — it's geometry. Same story up: a 10.9° fastball path swings under 12.4" of carry above the zone.</span></div>
           </div>
         </div>
 
@@ -377,6 +408,7 @@ footer{padding:30px 0 44px;color:var(--dim);font-family:'IBM Plex Mono';font-siz
             <div class="aa attack"><span class="tag2">Attack</span><span>Sliders down-and-in off the plate — 40% chase — and curveballs early.</span></div>
             <div class="aa avoid"><span class="tag2">Avoid</span><span>Fastballs in the zone. He starts vs lefties for a reason: 10% whiff, .453 xwOBAcon, 94 mph EV on lefty heaters.</span></div>
             <p class="why">The rare lefty bat Pittsburgh trusts against southpaws — because he's a fastball hitter regardless of hand. The standard lefty-lefty slider plan works; the lazy lefty-lefty fastball plan does not.</p>
+            <div class="dna"><span class="tag2">Swing</span><span>Modest 69.2 mph bat but the best squared-up rate on the roster vs LHP (.286 per swing) — a timing hitter, not a speed hitter. Against breaking balls the bat decays to <b>67.2 at 19°</b> — rolling over and reaching. The slider attacks the decay.</span></div>
           </div>
         </div>
 
@@ -386,6 +418,7 @@ footer{padding:30px 0 44px;color:var(--dim);font-family:'IBM Plex Mono';font-siz
             <div class="aa attack"><span class="tag2">Attack</span><span>Changeup tunnel — 52% whiff — and slider chase below the zone (53% chase rate).</span></div>
             <div class="aa avoid"><span class="tag2">Avoid</span><span>Fastballs in the zone (.479 xwOBAcon, 13% whiff) and anything breaking that hangs (.646 on sliders he reaches).</span></div>
             <p class="why">Pure guess hitter at this stage: sells out for the heater, comes off the changeup badly. The FF/CH tunnel was built for this at-bat. Never give in on 3-2 — the walk is cheaper than the mistake.</p>
+            <div class="dna"><span class="tag2">Swing</span><span>Steepest shoulder plane in the lineup (38° tilt) and he actually swings <b>harder at offspeed (75.1) than fastballs (71.1)</b> — a guesser's signature. When the guess is heater and the changeup arrives, a 24.2° uphill hack meets a pitch falling out of the tunnel. That's the 52% whiff.</span></div>
           </div>
         </div>
 
@@ -395,6 +428,7 @@ footer{padding:30px 0 44px;color:var(--dim);font-family:'IBM Plex Mono';font-siz
             <div class="aa attack"><span class="tag2">Attack</span><span>Slider ladder down-and-in (47% whiff, 48% chase), four-seams above the zone (41% whiff up).</span></div>
             <div class="aa avoid"><span class="tag2">Avoid</span><span>Fastballs middle — the pull-side pop is real (4 HR) and PNC's right field is short.</span></div>
             <p class="why">The textbook lefty-slider victim: strikes out in over a third of his trips against southpaws. He's in there for the platoon homer threat — deny the one pitch that feeds it and he beats himself.</p>
+            <div class="dna"><span class="tag2">Swing</span><span><b>Steepest average path on the team vs LHP (16.6°)</b>, reaching 21–25° on spin and offspeed. The uppercut is the hole: gyro slider under it, ride fastball over it. Pull-oriented bat path plus PNC's short porch is exactly why nothing lives middle-in.</span></div>
           </div>
         </div>
 
@@ -404,6 +438,7 @@ footer{padding:30px 0 44px;color:var(--dim);font-family:'IBM Plex Mono';font-siz
             <div class="aa attack"><span class="tag2">Attack</span><span>Four-seams up (43% whiff on lefty heaters so far), spin below.</span></div>
             <div class="aa avoid"><span class="tag2">Avoid</span><span>Grooving anything on reputation — the sample is tiny and he's reached in 4 of 8 trips.</span></div>
             <p class="why">Rookie book. Early swing-and-miss on velocity up is the only signal — trust the eyes in-game over the numbers here.</p>
+            <div class="dna"><span class="tag2">Swing</span><span>Only 11 tracked swings vs LHP — directional at best: ~5.6° vs fastballs, ordinary bat speed. No mechanical red flags either way yet.</span></div>
           </div>
         </div>
 
@@ -413,6 +448,7 @@ footer{padding:30px 0 44px;color:var(--dim);font-family:'IBM Plex Mono';font-siz
             <div class="aa attack"><span class="tag2">Attack</span><span>Everything out of the zone — 50% chase on fastballs and sliders. Elevated four-seam is the putaway (43% whiff up).</span></div>
             <div class="aa avoid"><span class="tag2">Avoid</span><span>Free strikes. He'll get himself out; a zone mistake is the only way he wins.</span></div>
             <p class="why">Zero walks, 42% strikeouts against lefties. The at-bat runs itself if nothing catches white.</p>
+            <div class="dna"><span class="tag2">Swing</span><span>Swings hard (73.5 vs fastballs) and steep (9.3°) with a long 7.8-ft swing — big leverage, late barrel. Ride up beats the length; spin down beats the plane. Both doors are open.</span></div>
           </div>
         </div>
 
@@ -423,6 +459,7 @@ footer{padding:30px 0 44px;color:var(--dim);font-family:'IBM Plex Mono';font-siz
           <div class="hbody">
             <div class="aa attack"><span class="tag2">Attack</span><span>Changeups down (50% chase) and anything soft below the zone.</span></div>
             <p class="why">Hasn't walked against a lefty all year. Expand immediately.</p>
+            <div class="dna"><span class="tag2">Swing</span><span>Real bat speed (73.9 vs fastballs) with a pull-angled path — the tools swing hard, the results don't follow. Changeups away from the pull-side barrel finish him.</span></div>
           </div>
         </div>
 
@@ -432,6 +469,7 @@ footer{padding:30px 0 44px;color:var(--dim);font-family:'IBM Plex Mono';font-siz
             <div class="aa attack"><span class="tag2">Attack</span><span>Never throw a strike you don't need: 84% chase on changeups, 56% chase on fastballs.</span></div>
             <div class="aa avoid"><span class="tag2">Avoid</span><span>Two-strike pitches in the zone — he's a 15% whiff contact pest with zero power.</span></div>
             <p class="why">Slap-and-run profile. If he starts (leadoff), the goal is weak contact early, not the strikeout. The most extreme chaser on the roster.</p>
+            <div class="dna"><span class="tag2">Swing</span><span>Slowest bat on the club (66.7), shortest swing (6.7 ft), and a <b>negative attack angle (-3.9°) vs fastballs</b> — he chops down on heaters. He physically cannot lift Boyd's riding four-seam: elevated fastballs to him are ground balls and pop-ups, not risk. The only true "safe zone strike" in this lineup.</span></div>
           </div>
         </div>
 
@@ -440,6 +478,7 @@ footer{padding:30px 0 44px;color:var(--dim);font-family:'IBM Plex Mono';font-siz
           <div class="hbody">
             <div class="aa attack"><span class="tag2">Attack</span><span>Slider away — .047 xwOBAcon against lefty sweep/slide this year.</span></div>
             <p class="why">Standard lefty-lefty plan applies. Pinch-hit risk only.</p>
+            <div class="dna"><span class="tag2">Swing</span><span>Flat 3.5° vs fastballs with a 70 mph bat — a contact path, no lift. Spin below the zone stays the plan.</span></div>
           </div>
         </div>
 
@@ -461,11 +500,12 @@ footer{padding:30px 0 44px;color:var(--dim);font-family:'IBM Plex Mono';font-siz
     <h2>Game Plan</h2>
     <p class="lede">The whole start in six calls.</p>
     <div class="plan">
-      <div class="prow"><span class="pico disp">Tunnel</span><p><strong>Fastball up establishes the line, changeup finishes below it.</strong> Against a seven-righty lineup that includes three genuine changeup victims (Valdez, Ozuna, N. Gonzales), the FF/CH pairing is the identity of the night. Target 30–35% changeup usage to righties.</p></div>
+      <div class="prow"><span class="pico disp">Tunnel</span><p><strong>Fastball up establishes the line, changeup finishes below it.</strong> Against a seven-righty lineup that includes three genuine changeup victims (Valdez, Ozuna, N. Gonzales), the FF/CH pairing is the identity of the night. Target 30–35% changeup usage to righties. The bat paths make it structural: <strong>Valdez (23°), Ozuna (24°), Lowe (25°) and Gonzales (19°) all swing steeply uphill at offspeed</strong> — the 3.6" ride changeup lives under every one of those planes.</p></div>
       <div class="prow"><span class="pico disp">Steal</span><p><strong>First-pitch curveball early and often.</strong> It's already 25% of first pitches to righties and this lineup's bottom third can't touch it. Bank 0-1, save the fastball's bullets for when they matter.</p></div>
       <div class="prow warn"><span class="pico disp">Red Box</span><p><strong>The Valdez rule overrides everything.</strong> Changeups down-away and four-seams above the eyes. No sliders — not to steal a strike, not 0-2, not ever. If first base is open in a leverage spot, four wide ones is the right pitch.</p></div>
       <div class="prow"><span class="pico disp">Flip</span><p><strong>Second time through, breaking-first sequencing.</strong> Fastball contact quality jumps 8 mph on the second look. Innings 3–5: open at-bats with curve/change, use the four-seam as the surprise up. The velocity is back (93.4+ in recent starts) — it plays best when it's least expected.</p></div>
       <div class="prow"><span class="pico disp">Expand</span><p><strong>The bottom third and bench get nothing to hit.</strong> Cook, Davis, Mangum and Flores combine for extreme chase and near-zero walks. Every 0-0 to slots 8–9 can start off the plate. Free outs live there — take all of them.</p></div>
+      <div class="prow"><span class="pico disp">Elevate</span><p><strong>The high four-seam is a targeted weapon, not a blanket one.</strong> Ladder it to the steep swings — Valdez (11° vs FB), Lowe (10°), Cook (9°), Davis (10°) — where 12.4" of carry beats the uphill path. Skip it against the flat swings: Triolo (2°), Mangum (-4°), N. Gonzales (4°) and Reynolds (1°) cover the top of the zone with the barrel, and elevating to them just spends pitches.</p></div>
       <div class="prow"><span class="pico disp">Wall</span><p><strong>Respect the Clemente Wall with the lefty bats.</strong> Lowe and O'Hearn's pull-side power plays to PNC's short right field. Sliders down-in and ladders up beat them; anything middle-in on a line is a souvenir. The left-center notch is the friend — let righties hit the big part of the park.</p></div>
     </div>
   </div>
@@ -478,5 +518,26 @@ footer{padding:30px 0 44px;color:var(--dim);font-family:'IBM Plex Mono';font-siz
   </div>
 </footer>
 
+
+<script>
+(function(){
+  var tabs = document.querySelectorAll('.tab');
+  var secs = document.querySelectorAll('section');
+  function show(id){
+    tabs.forEach(function(t){
+      var on = t.dataset.t === id;
+      t.classList.toggle('active', on);
+      t.setAttribute('aria-selected', on);
+    });
+    secs.forEach(function(s){ s.classList.toggle('active', s.id === id); });
+    window.scrollTo({top:0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'});
+  }
+  tabs.forEach(function(t){ t.addEventListener('click', function(){ show(t.dataset.t); }); });
+  if (location.hash) {
+    var id = location.hash.slice(1);
+    if (document.getElementById(id)) show(id);
+  }
+})();
+</script>
 </body>
 </html>
