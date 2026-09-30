@@ -1,542 +1,401 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BOYD vs PITTSBURGH — No Brand Baseball</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Boyd Wild Card Game 1</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
 <style>
+/* Layout: broadcast scoreboard header, tab rail, single-column briefing sheets. Dark by design (night game, broadcast look). */
 :root{
-  --ink:#070A12;
-  --panel:#0C1322;
-  --panel2:#101A30;
-  --line:#1C2A47;
-  --cubs:#0E3386;
-  --day:#6CACE4;
-  --red:#CC3433;
-  --ivory:#F3F1E9;
-  --dim:#8A96AD;
-  --good:#4CC38A;
+  --bg:#070d1c; --panel:#0d1730; --line:#1f2d52; --fg:#e8ecf6; --mute:#8b97b8;
+  --blue:#0e3386; --sky:#6aa0ff; --red:#cc3433;
+  --good:#3fcf8e; --warn:#f2c14e; --bad:#ff5d5d;
+  --disp:'Oswald','Arial Narrow',Impact,sans-serif; --body:'IBM Plex Sans',system-ui,sans-serif; --mono:'IBM Plex Mono',ui-monospace,monospace;
+  color-scheme:dark;
 }
-*{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{background:var(--ink);color:var(--ivory);font-family:'Inter',sans-serif;font-size:15px;line-height:1.55}
-.wrap{max-width:1060px;margin:0 auto;padding:0 22px}
-.mono{font-family:'IBM Plex Mono',monospace}
-.disp{font-family:'Barlow Condensed',sans-serif}
-
-/* ===== masthead ===== */
-header{border-bottom:1px solid var(--line);background:linear-gradient(180deg,#0A1120 0%,var(--ink) 100%)}
-.mast{display:flex;justify-content:space-between;align-items:center;padding:16px 0}
-.brand{font-family:'Barlow Condensed';font-weight:800;font-size:20px;letter-spacing:.14em;text-transform:uppercase}
-.brand span{color:var(--day)}
-.tag{font-family:'IBM Plex Mono';font-size:11px;color:var(--dim);letter-spacing:.08em}
-.hero{padding:38px 0 34px}
-.kick{font-family:'IBM Plex Mono';font-size:12px;color:var(--day);letter-spacing:.22em;text-transform:uppercase;margin-bottom:10px}
-h1{font-family:'Barlow Condensed';font-weight:800;font-size:clamp(44px,7vw,76px);line-height:.95;text-transform:uppercase;letter-spacing:.01em}
-h1 em{font-style:normal;color:var(--day)}
-.sub{margin-top:14px;color:var(--dim);font-size:15px;max-width:640px}
-.gamebar{display:flex;gap:26px;flex-wrap:wrap;margin-top:22px;padding:14px 18px;background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--cubs);border-radius:6px}
-.gb{font-family:'IBM Plex Mono';font-size:12.5px}
-.gb b{display:block;color:var(--dim);font-weight:500;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px}
-
-
-/* ===== tabs ===== */
-.tabs{position:sticky;top:0;z-index:50;background:rgba(7,10,18,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
-.tabrow{display:flex;gap:4px;overflow-x:auto;padding:10px 0;-webkit-overflow-scrolling:touch}
-.tab{font-family:'Barlow Condensed';font-weight:700;font-size:16px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);background:none;border:1px solid transparent;border-radius:6px;padding:8px 16px;cursor:pointer;white-space:nowrap;transition:color .15s,background .15s}
-.tab:hover{color:var(--ivory)}
-.tab:focus-visible{outline:2px solid var(--day);outline-offset:2px}
-.tab.active{color:var(--ivory);background:var(--cubs);border-color:var(--line)}
-section{display:none}
-section.active{display:block}
-
-/* ===== sections ===== */
-section{padding:46px 0;border-bottom:1px solid var(--line)}
-h2{font-family:'Barlow Condensed';font-weight:800;font-size:34px;text-transform:uppercase;letter-spacing:.03em;display:flex;align-items:center;gap:14px;margin-bottom:8px}
-h2::after{content:"";flex:1;height:1px;background:var(--line)}
-.lede{color:var(--dim);margin-bottom:26px;max-width:720px}
-h3{font-family:'Barlow Condensed';font-weight:700;font-size:21px;text-transform:uppercase;letter-spacing:.05em;color:var(--day);margin:26px 0 12px}
-
-/* briefing */
-.brief{display:grid;gap:14px;max-width:820px}
-.bcard{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:18px 20px;display:flex;gap:16px;align-items:flex-start}
-.bnum{font-family:'Barlow Condensed';font-weight:800;font-size:30px;color:var(--cubs);line-height:1;min-width:34px;-webkit-text-stroke:1px var(--day);color:transparent}
-.bcard p{font-size:15.5px}
-.bcard strong{color:var(--day)}
-.bcard.red{border-color:var(--red);background:linear-gradient(90deg,rgba(204,52,51,.10),var(--panel) 55%)}
-.bcard.red strong{color:var(--red)}
-.bcard.red .bnum{-webkit-text-stroke:1px var(--red)}
-
-/* stat strip */
-.strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden;margin:22px 0}
-.cell{background:var(--panel);padding:14px 12px;text-align:center}
-.cell .v{font-family:'Barlow Condensed';font-weight:800;font-size:28px;color:var(--ivory)}
-.cell .l{font-family:'IBM Plex Mono';font-size:10px;color:var(--dim);letter-spacing:.1em;text-transform:uppercase;margin-top:2px}
-.cell.hl .v{color:var(--day)}
-
-/* charts */
-.chartrow{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:20px}
-.chart{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:16px}
-.chart h4{font-family:'IBM Plex Mono';font-size:11.5px;color:var(--dim);letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px}
-svg text{font-family:'IBM Plex Mono';fill:var(--dim)}
-
-/* arsenal */
-.pitch{background:var(--panel);border:1px solid var(--line);border-radius:8px;margin-bottom:14px;overflow:hidden}
-.phead{display:flex;align-items:center;gap:14px;padding:14px 18px;background:var(--panel2);border-bottom:1px solid var(--line);flex-wrap:wrap}
-.pbadge{font-family:'Barlow Condensed';font-weight:800;font-size:22px;letter-spacing:.04em;padding:2px 12px;border-radius:4px;background:var(--cubs);text-transform:uppercase}
-.pbadge.ch{background:#1F6F54}.pbadge.sl{background:#7A2E8F}.pbadge.cu{background:#B06A1F}.pbadge.si{background:#3E4A63}
-.pname{font-family:'Barlow Condensed';font-weight:700;font-size:20px;text-transform:uppercase;letter-spacing:.05em}
-.puse{font-family:'IBM Plex Mono';font-size:12px;color:var(--dim);margin-left:auto}
-.pbody{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:1px;background:var(--line)}
-.pstat{background:var(--panel);padding:11px 10px;text-align:center}
-.pstat .v{font-family:'IBM Plex Mono';font-weight:600;font-size:15px}
-.pstat .l{font-family:'IBM Plex Mono';font-size:9.5px;color:var(--dim);letter-spacing:.08em;text-transform:uppercase;margin-top:2px}
-.pnote{padding:13px 18px;font-size:14.5px;color:#C9D2E2;border-top:1px solid var(--line)}
-.pnote strong{color:var(--day)}
-
-/* hitters */
-.lineupwrap{display:grid;grid-template-columns:280px 1fr;gap:22px;align-items:start}
-.lupanel{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:16px;position:sticky;top:14px}
-.lupanel h4{font-family:'IBM Plex Mono';font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--day);margin-bottom:10px}
-.lurow{display:flex;gap:10px;padding:6px 0;border-bottom:1px dashed var(--line);font-size:13.5px;align-items:baseline}
-.lurow:last-child{border-bottom:0}
-.lurow .n{font-family:'Barlow Condensed';font-weight:700;font-size:15px;color:var(--dim);min-width:16px}
-.lurow .b{font-family:'IBM Plex Mono';font-size:11px;color:var(--dim);margin-left:auto}
-.lurow .b.L{color:var(--day)}
-.lurow.dm .b, .lurow.dm strong{color:var(--red)}
-.lunote{font-size:12px;color:var(--dim);margin-top:12px;line-height:1.5}
-.hcard{background:var(--panel);border:1px solid var(--line);border-radius:8px;margin-bottom:14px;overflow:hidden}
-.hcard.threat{border-color:var(--red);box-shadow:0 0 0 1px rgba(204,52,51,.35)}
-.hhead{display:flex;align-items:baseline;gap:12px;padding:13px 18px;background:var(--panel2);border-bottom:1px solid var(--line);flex-wrap:wrap}
-.hslot{font-family:'Barlow Condensed';font-weight:800;font-size:24px;color:var(--day);min-width:24px}
-.hname{font-family:'Barlow Condensed';font-weight:700;font-size:20px;text-transform:uppercase;letter-spacing:.04em}
-.hmeta{font-family:'IBM Plex Mono';font-size:11.5px;color:var(--dim)}
-.hline{font-family:'IBM Plex Mono';font-size:12px;color:var(--ivory);margin-left:auto}
-.threat .hslot,.threat .hname{color:var(--red)}
-.threatlabel{font-family:'IBM Plex Mono';font-size:10px;letter-spacing:.18em;background:var(--red);color:#fff;padding:3px 8px;border-radius:3px;text-transform:uppercase}
-.hbody{padding:14px 18px;display:grid;gap:9px}
-.aa{display:flex;gap:10px;font-size:14px;align-items:baseline}
-.aa .tag2{font-family:'IBM Plex Mono';font-size:10px;letter-spacing:.12em;padding:2px 8px;border-radius:3px;text-transform:uppercase;white-space:nowrap}
-.attack .tag2{background:rgba(76,195,138,.15);color:var(--good);border:1px solid rgba(76,195,138,.4)}
-.avoid .tag2{background:rgba(204,52,51,.13);color:#F08A89;border:1px solid rgba(204,52,51,.45)}
-.why{font-size:13px;color:var(--dim)}
-.why b{color:#C9D2E2;font-weight:600}
-.dna{display:flex;gap:10px;align-items:baseline;font-size:13px;color:var(--dim);border-top:1px dashed var(--line);padding-top:9px;margin-top:2px;flex-wrap:wrap}
-.dna .tag2{font-family:'IBM Plex Mono';font-size:10px;letter-spacing:.12em;padding:2px 8px;border-radius:3px;text-transform:uppercase;white-space:nowrap;background:rgba(108,172,228,.12);color:var(--day);border:1px solid rgba(108,172,228,.4)}
-.dna b{color:#C9D2E2;font-weight:600}
-
-/* game plan */
-.plan{display:grid;gap:14px;max-width:840px}
-.prow{display:flex;gap:16px;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:16px 18px}
-.pico{font-family:'Barlow Condensed';font-weight:800;font-size:15px;letter-spacing:.08em;color:var(--ink);background:var(--day);border-radius:4px;padding:3px 10px;height:fit-content;text-transform:uppercase;white-space:nowrap}
-.prow.warn .pico{background:var(--red);color:#fff}
-.prow p{font-size:15px}
-.prow strong{color:var(--day)}
-.prow.warn strong{color:var(--red)}
-
-footer{padding:30px 0 44px;color:var(--dim);font-family:'IBM Plex Mono';font-size:11px;letter-spacing:.08em;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
-
-@media(max-width:820px){
-  .chartrow{grid-template-columns:1fr}
-  .lineupwrap{grid-template-columns:1fr}
-  .lupanel{position:static}
-}
-@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.55 var(--body);padding-inline:16px;padding-block:0 48px}
+.wrap{max-width:1080px;margin:0 auto}
+.bug{background:var(--blue);border-bottom:6px solid var(--red);margin:0 -16px;padding:18px 16px 14px}
+.bug .wrap{display:flex;flex-wrap:wrap;gap:12px 28px;align-items:flex-end;justify-content:space-between}
+.brand{font:600 11px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;opacity:.85}
+h1{font:700 clamp(30px,6vw,52px)/1 var(--disp);text-transform:uppercase;letter-spacing:.01em;margin:6px 0 4px;text-wrap:balance}
+.sub{font:500 14px var(--body);opacity:.92}
+.score{display:flex;gap:18px;font:600 13px var(--mono);text-transform:uppercase}
+.score div{display:flex;flex-direction:column;gap:2px}.score b{font:600 22px var(--disp)}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);margin:0 -16px;padding:0 16px;overflow-x:auto}
+nav .wrap{display:flex;gap:4px}
+nav button{font:600 14px var(--disp);letter-spacing:.08em;text-transform:uppercase;color:var(--mute);background:none;border:0;border-bottom:3px solid transparent;padding:14px 12px 11px;cursor:pointer;white-space:nowrap}
+nav button[aria-selected=true]{color:var(--fg);border-color:var(--red)}
+nav button:focus-visible{outline:2px solid var(--sky);outline-offset:-2px}
+section{padding-top:24px}
+h2{font:600 24px var(--disp);text-transform:uppercase;letter-spacing:.03em;margin:28px 0 10px}
+h2:first-child{margin-top:4px}
+h3{font:600 20px/1.1 var(--disp);text-transform:uppercase;margin:0;letter-spacing:.02em}
+h4{font:600 12px var(--mono);text-transform:uppercase;letter-spacing:.12em;margin:0 0 6px;color:var(--mute)}
+p{max-width:72ch;margin:0 0 10px}
+.lede{font-size:17px;max-width:70ch}
+.keys{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:16px 0}
+.key{background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--sky);padding:14px 16px}
+.key.r{border-top-color:var(--red)}
+.key b{display:block;font:600 30px/1 var(--disp);margin-bottom:6px}
+.key p{font-size:14px;color:var(--mute);margin:0}
+.rules{list-style:none;padding:0;margin:0;display:grid;gap:8px;counter-reset:r}
+.rules li{counter-increment:r;background:var(--panel);border:1px solid var(--line);padding:12px 14px 12px 52px;position:relative;max-width:none}
+.rules li::before{content:counter(r);position:absolute;left:14px;top:10px;font:700 24px var(--disp);color:var(--red)}
+.rules b{color:var(--fg)}
+.strip{list-style:none;display:flex;flex-wrap:wrap;gap:6px;padding:0;margin:10px 0}
+.strip li{display:flex;align-items:center;gap:6px;background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--mute);padding:6px 10px;font:600 14px var(--disp);text-transform:uppercase}
+.strip li span{color:var(--mute);font-family:var(--mono);font-size:12px}.strip em{font:500 11px var(--mono);color:var(--mute);font-style:normal}
+.strip .red{border-left-color:var(--bad)}.strip .yellow{border-left-color:var(--warn)}.strip .green{border-left-color:var(--good)}
+.tbl{overflow-x:auto;border:1px solid var(--line);background:var(--panel)}
+table{border-collapse:collapse;width:100%;font:500 13px var(--mono);font-variant-numeric:tabular-nums}
+th,td{padding:8px 10px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+th{font:600 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--mute);background:var(--bg)}
+th:first-child,td:first-child,td:nth-child(2){text-align:left}
+tr.sd td{background:rgba(204,52,51,.14)}
+.g{color:var(--good)}.y{color:var(--warn)}.r{color:var(--bad)}
+.pt{font-weight:600}.pt-FF{color:#ff7a7a}.pt-CH{color:var(--good)}.pt-SL{color:var(--warn)}.pt-CU{color:var(--sky)}.pt-SI{color:#e79bff}
+.note{font-size:13px;color:var(--mute)}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.two>*{min-width:0}
+.panel{background:var(--panel);border:1px solid var(--line);padding:14px 16px}
+.spark{width:100%;height:auto;display:block}.tk{font:500 10px var(--mono);fill:var(--mute)}.tk.hi{fill:var(--fg);font-size:12px}
+.hc{background:var(--panel);border:1px solid var(--line);border-left:5px solid var(--mute);padding:16px;margin-bottom:14px}
+.hc.red{border-left-color:var(--bad)}.hc.yellow{border-left-color:var(--warn)}.hc.green{border-left-color:var(--good)}
+.hc header{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.hc header>div{flex:1;min-width:0}
+.ord{font:700 32px/1 var(--disp);color:var(--mute);width:28px}
+.meta{margin:2px 0 0;font:500 12px var(--mono);color:var(--mute)}
+.chip{font:600 11px var(--mono);letter-spacing:.1em;padding:4px 8px;border:1px solid}
+.chip.red{color:var(--bad)}.chip.yellow{color:var(--warn)}.chip.green{color:var(--good)}
+.head{font-weight:600;font-size:16px}
+.stats{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin:10px 0}
+.stats div{background:var(--bg);padding:8px;display:flex;flex-direction:column;gap:2px}
+.stats b{font:600 18px var(--mono)}.stats span{font:500 10px var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--mute)}
+.fam{display:flex;flex-wrap:wrap;gap:6px 18px;font:500 12px var(--mono);color:var(--mute);margin-bottom:10px}
+.fam b{font-size:14px}
+.aa{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.aa>div{min-width:0}
+.aa ul{margin:0;padding-left:18px;font-size:14px}.aa li{margin-bottom:4px}
+.gtxt{color:var(--good)}.rtxt{color:var(--bad)}
+.bat,.rec{font-size:13.5px;color:var(--mute);margin:8px 0 0}.bat b,.rec b{color:var(--fg)}
+.bench{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:10px}
+.bn{background:var(--panel);border:1px solid var(--line);padding:12px 14px}.bn h4{color:var(--fg);font-size:13px}.bn h4 span{color:var(--mute)}.bn p{font-size:13.5px;margin:0}
+.plan{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.plan .panel h3{font-size:17px;margin-bottom:8px}
+.plan ul{margin:0;padding-left:18px;font-size:14px}.plan li{margin-bottom:5px}
+.gamebar{border:2px solid var(--red);background:var(--panel);padding:16px 18px;margin-top:18px}
+.gamebar h3{color:var(--red);margin-bottom:8px}
+.gamebar p{font-size:16px;font-weight:500;margin:0}
+footer{margin-top:40px;font:500 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
+@media (max-width:640px){.stats{grid-template-columns:repeat(3,1fr)}.aa{grid-template-columns:1fr}.score{display:none}}
+@media (prefers-reduced-motion:no-preference){section{animation:fade .25s ease-out}@keyframes fade{from{opacity:.4}to{opacity:1}}}
+[hidden]{display:none!important}
 </style>
 </head>
 <body>
 
-<header>
-  <div class="wrap">
-    <div class="mast">
-      <div class="brand">NO BRAND <span>BASEBALL</span></div>
-      <div class="tag">GAMEDAY INTEL · SP REPORT</div>
-    </div>
-    <div class="hero">
-      <div class="kick">Start Brief · Chicago Cubs @ Pittsburgh Pirates</div>
-      <h1>Matthew <em>Boyd</em><br>vs. Pittsburgh</h1>
-      <p class="sub">Left-hander. 10 starts. The Pirates will stack seven or eight right-handed bats and dare you to beat them with the fastball. Don't take the dare — this game is won with the changeup.</p>
-      <div class="gamebar">
-        <div class="gb"><b>First pitch</b>Fri · Jul 24 · 6:40 PM ET</div>
-        <div class="gb"><b>Venue</b>PNC Park</div>
-        <div class="gb"><b>Opposing SP</b>Jared Jones (R)</div>
-        <div class="gb"><b>Season</b>6–1 · 4.15 ERA · 52 IP</div>
-        <div class="gb"><b>K / BB</b>51 / 14</div>
-      </div>
-    </div>
-  </div>
-</header>
+<div class="bug"><div class="wrap">
+ <div>
+  <div class="brand">No Brand Baseball Analytics · Pre-Game Scout</div>
+  <h1>Matthew Boyd · Wild Card Game 1</h1>
+  <div class="sub">Cubs at Padres · Petco Park · Tue 9/29/2026 · 9:00 PM CT · vs RHP Michael King</div>
+ </div>
+ <div class="score"><div><span>2026</span><b>10-5 · 3.91</b></div><div><span>IP / K / BB</span><b>126.2 · 96 · 39</b></div><div><span>Rest</span><b>4 days</b></div></div>
+</div></div>
 
-<nav class="tabs" aria-label="Report sections">
-  <div class="wrap">
-    <div class="tabrow" role="tablist">
-      <button class="tab active" role="tab" aria-selected="true" data-t="briefing">Briefing</button>
-      <button class="tab" role="tab" aria-selected="false" data-t="overview">Overview</button>
-      <button class="tab" role="tab" aria-selected="false" data-t="arsenal">Arsenal</button>
-      <button class="tab" role="tab" aria-selected="false" data-t="hitters">Hitters</button>
-      <button class="tab" role="tab" aria-selected="false" data-t="plan">Game Plan</button>
-    </div>
-  </div>
-</nav>
+<nav><div class="wrap" role="tablist">
+ <button role="tab" aria-selected="true" data-t="brief" id="t-brief">Briefing</button>
+ <button role="tab" aria-selected="false" data-t="rematch" id="t-rematch">Rematch</button>
+ <button role="tab" aria-selected="false" data-t="hitters" id="t-hitters">Hitters</button>
+ <button role="tab" aria-selected="false" data-t="arsenal" id="t-arsenal">Arsenal</button>
+ <button role="tab" aria-selected="false" data-t="plan" id="t-plan">Game Plan</button>
+</div></nav>
 
+<div class="wrap">
 
-<!-- ================= BRIEFING ================= -->
-<section id="briefing" class="active">
-  <div class="wrap">
-    <h2>The Briefing</h2>
-    <p class="lede">Five things. If nothing else survives the bus ride, these do.</p>
-    <div class="brief">
-      <div class="bcard"><div class="bnum disp">1</div><p><strong>The changeup is the engine tomorrow, not the fastball.</strong> Against righties this year the change gets a whiff on 28% of swings; the four-seam gets 17% and comes back off the barrel at 95 mph when they touch it. The fastball's job is to be seen up — the changeup's job is to finish down. Same tunnel, 14 mph apart.</p></div>
-      <div class="bcard"><div class="bnum disp">2</div><p><strong>The curveball is free strikes.</strong> 40.5% called-strike-plus-whiff against righties and almost nothing on contact (.138 xwOBA). This lineup takes early — drop it in first pitch and get to 0-1 without spending the fastball.</p></div>
-      <div class="bcard"><div class="bnum disp">3</div><p><strong>Lefties are already beaten — stay the course.</strong> .200 average, .547 OPS against this season. The slider does it: 49% whiff against left-handed bats. Lowe and O'Hearn get a steady diet of it down and in off the plate.</p></div>
-      <div class="bcard red"><div class="bnum disp">4</div><p><strong>Esmerlyn Valdez is the game.</strong> 1.508 OPS and 7 homers in 46 plate appearances against lefties. He hits lefty fastballs at 101 mph and slugs over 1.100 on lefty sliders. But he whiffs on <strong>69% of his swings at changeups</strong> from southpaws. One rule, three times: changeup, changeup, changeup — and never a slider. The swing data says why it works: the fastest bat on the team (75 mph) steepens to <strong>23° uphill against offspeed</strong> — the changeup falls out of a tunnel his path can't bend down to reach.</p></div>
-      <div class="bcard"><div class="bnum disp">5</div><p><strong>Second time through, hide the heater.</strong> First-look fastball contact comes back at 92.6 mph. Second look: <strong>100.2 mph</strong>. Flip the script in innings 3–5 — breaking ball first, fastball as the surprise, not the appetizer.</p></div>
-    </div>
-  </div>
+<section id="brief">
+ <h2>The short version</h2>
+ <p class="lede">Third playoff Game 1 start, second straight Wild Card opener against San Diego. The Padres beat him up twice this year (9 IP, 16 H, 8 ER), and 12 of those 16 hits came on two pitches: changeups that stayed at zone height and fastballs left in the middle band. Tonight's plan fixes both. Fastballs finish at the letters or above. Changeups finish below the knees. The curveball steals strike one.</p>
+ <div class="keys">
+  <div class="key"><b>5 starts</b><p>Homerless since 9/1: 29 IP, 0 HR. Best stretch of the season.</p></div>
+  <div class="key"><b>93.7</b><p>Four-seam velo in each of his last two starts, the top of his 2026 range (season 92.8).</p></div>
+  <div class="key r"><b>12 of 16</b><p>Padres hits vs Boyd in 2026 that came on zone-height changeups (6) or middle-band fastballs (6).</p></div>
+  <div class="key r"><b>.429</b><p>xwOBA on his fastball at belt height. At the letters: .372. Above the zone: .277, with a 35% whiff rate.</p></div>
+ </div>
+
+ <h2>Lineup (official)</h2>
+ <ul class="strip"><li class='red'><span>1</span>Tatis<em>R</em></li><li class='green'><span>2</span>Taylor<em>R</em></li><li class='red'><span>3</span>Machado<em>R</em></li><li class='yellow'><span>4</span>France<em>R</em></li><li class='yellow'><span>5</span>Merrill<em>L</em></li><li class='yellow'><span>6</span>Hays<em>R</em></li><li class='green'><span>7</span>Bogaerts<em>R</em></li><li class='green'><span>8</span>Cronenworth<em>L</em></li><li class='green'><span>9</span>Campusano<em>R</em></li></ul>
+ <p class="note">Seven right-handed bats and two lefties (Merrill 5th, Cronenworth 8th). Red box: Tatis, Machado. Padres as a team: .706 OPS vs LHP, .722 vs RHP.</p>
+
+ <h2>Five things for tonight</h2>
+ <ol class="rules">
+  <li><b>Changeup below the knees or not at all.</b> Against righties, his changeup below 1.5 ft draws a 46% whiff rate (.291 xwOBA). At zone height it is 28% (.305), and at mid-thigh or higher it is 8% (.345). In September only 22% of his changeups to righties finished below the knees, down from 32% on the season. That share has to come back tonight.</li>
+  <li><b>No belt-high fastballs.</b> His four-seam has lost ride since spring (13–14" in March/April, 10–11" now). At belt height it is his worst pitch (−4.1 runs). At the letters it is worth +3.9 runs. Against Tatis and Machado, who have flat bats, the letters are not enough. The fastball has to finish above the zone.</li>
+  <li><b>Curveball for strike one.</b> 36% CSW, the best of his four pitches. He already opens righties with it 24% of the time. Hays (.001 xwOBA vs LHP curves) and France (.115) are the names.</li>
+  <li><b>Hitters' counts get no zone fastballs to the red boxes.</b> Tatis .521 and France .558 xwOBA when ahead in the count. Machado's 6/30 homer came 2-1. Behind in the count, the changeup below the knees is the pitch.</li>
+  <li><b>Take the free strikes.</b> Campusano (73%), Bogaerts (67%), and Cronenworth (62%) take first-pitch strikes. Samad Taylor and Hays swing early, so they get the curve or an edge.</li>
+ </ol>
 </section>
 
-<!-- ================= OVERVIEW ================= -->
-<section id="overview">
-  <div class="wrap">
-    <h2>Season Overview</h2>
-    <p class="lede">Ten starts around a six-week absence (knee meniscus, early May–late June). The stuff came back louder than it left.</p>
-    <div class="strip">
-      <div class="cell"><div class="v disp">6–1</div><div class="l">Record</div></div>
-      <div class="cell"><div class="v disp">4.15</div><div class="l">ERA</div></div>
-      <div class="cell"><div class="v disp">1.21</div><div class="l">WHIP</div></div>
-      <div class="cell hl"><div class="v disp">8.8</div><div class="l">K/9</div></div>
-      <div class="cell hl"><div class="v disp">2.4</div><div class="l">BB/9</div></div>
-      <div class="cell"><div class="v disp">.200</div><div class="l">AVG vs LHB</div></div>
-      <div class="cell"><div class="v disp">.260</div><div class="l">AVG vs RHB</div></div>
-      <div class="cell"><div class="v disp">6</div><div class="l">HR allowed</div></div>
-    </div>
-    <div class="chartrow">
-      <div class="chart">
-        <h4>Four-seam velocity by start — pre / post knee</h4>
-        <svg viewBox="0 0 440 190" width="100%">
-          <line x1="40" y1="20" x2="40" y2="150" stroke="#1C2A47"/>
-          <line x1="40" y1="150" x2="420" y2="150" stroke="#1C2A47"/>
-          <text x="8" y="34" font-size="10">94.0</text>
-          <text x="8" y="88" font-size="10">92.5</text>
-          <text x="8" y="142" font-size="10">91.0</text>
-          <!-- pre-IL: 93.3 92.2 92.6 92.4 91.8 ; post: 92.8 93.4 93.5 92.6 92.8 ; scale 91..94 -> y=150..30 -->
-          <rect x="205" y="20" width="30" height="130" fill="rgba(204,52,51,.08)"/>
-          <text x="207" y="16" font-size="9" fill="#CC3433">IL</text>
-          <polyline points="60,58 95,102 130,86 165,94 200,118" fill="none" stroke="#8A96AD" stroke-width="2"/>
-          <polyline points="240,78 275,54 310,50 345,86 380,78" fill="none" stroke="#6CACE4" stroke-width="2.5"/>
-          <g fill="#8A96AD"><circle cx="60" cy="58" r="3.5"/><circle cx="95" cy="102" r="3.5"/><circle cx="130" cy="86" r="3.5"/><circle cx="165" cy="94" r="3.5"/><circle cx="200" cy="118" r="3.5"/></g>
-          <g fill="#6CACE4"><circle cx="240" cy="78" r="3.5"/><circle cx="275" cy="54" r="3.5"/><circle cx="310" cy="50" r="3.5"/><circle cx="345" cy="86" r="3.5"/><circle cx="380" cy="78" r="3.5"/></g>
-          <text x="52" y="168" font-size="9">3/26</text>
-          <text x="192" y="168" font-size="9">5/3</text>
-          <text x="232" y="168" font-size="9">6/25</text>
-          <text x="300" y="168" font-size="9">7/7</text>
-          <text x="372" y="168" font-size="9">7/18</text>
-          <text x="240" y="42" font-size="10" fill="#6CACE4">93.4–93.5 peak post-return</text>
-        </svg>
-      </div>
-      <div class="chart">
-        <h4>Times through the order — wOBA against · FF exit velo</h4>
-        <svg viewBox="0 0 440 190" width="100%">
-          <line x1="60" y1="150" x2="400" y2="150" stroke="#1C2A47"/>
-          <!-- bars: woba .291 .330 .328 scale 0-.40 -> h up to 120 -->
-          <rect x="90"  y="63" width="54" height="87" fill="#0E3386"/>
-          <rect x="200" y="51" width="54" height="99" fill="#0E3386"/>
-          <rect x="310" y="52" width="54" height="98" fill="#0E3386"/>
-          <text x="102" y="56" font-size="11" fill="#F3F1E9">.291</text>
-          <text x="212" y="44" font-size="11" fill="#F3F1E9">.330</text>
-          <text x="322" y="45" font-size="11" fill="#F3F1E9">.328</text>
-          <text x="99"  y="168" font-size="10">1st look</text>
-          <text x="206" y="168" font-size="10">2nd look</text>
-          <text x="316" y="168" font-size="10">3rd look</text>
-          <!-- EV markers -->
-          <g font-size="10">
-            <text x="88"  y="30" fill="#8A96AD">FF EV 92.6</text>
-            <text x="196" y="30" fill="#CC3433">FF EV 100.2</text>
-            <text x="308" y="30" fill="#8A96AD">FF EV 93.6</text>
-          </g>
-        </svg>
-      </div>
-    </div>
-  </div>
+<section id="rematch" hidden>
+ <h2>Two starts vs San Diego in 2026</h2>
+ <div class="two">
+  <div class="panel"><h4>4/27 at Petco</h4><p><b>4 IP · 8 H · 5 ER · 2 BB · 4 K</b></p><p class="note">Damage: Machado CH double (2-0, 2.10 ft), France CH double (3-2, 1.53 ft, 104 EV), Machado SL double (107 EV), Tatis 112.5 EV single on a letters fastball, Merrill 108 EV single on a belt-high FF. 27% changeups, and too many at zone height.</p></div>
+  <div class="panel"><h4>6/30 at Wrigley</h4><p><b>5 IP · 8 H · 3 ER · 0 BB · 2 K · 2 HR</b></p><p class="note">Tatis led off with a HR on a 2-2 changeup at 1.80 ft that stayed on the inner third (106 EV). Machado HR on a 2-1 FF at 2.59 ft. France had two hard singles on middle fastballs. Merrill 103 EV single. Only 2 strikeouts, his lowest total of the season.</p></div>
+ </div>
+ <h2>The pattern</h2>
+ <div class="tbl"><table>
+  <tr><th>Pitch / location</th><th>Hits</th><th>Hard-hit (95+)</th><th>Read</th></tr>
+  <tr><td>CH at zone height (≥1.5 ft)</td><td>6</td><td>3</td><td style="text-align:left">Machado, France, Tatis HR, Andujar, Bogaerts, plus one hitter no longer on the roster</td></tr>
+  <tr><td>FF in the middle band (1.7–2.7 ft)</td><td>6</td><td>4</td><td style="text-align:left">Merrill ×2, France ×2, Machado HR, Fermin</td></tr>
+  <tr><td>CH below the knees (&lt;1.5 ft)</td><td>2</td><td>0</td><td style="text-align:left">Both soft (63 and 73 EV)</td></tr>
+  <tr><td>FF at the letters or above</td><td>1</td><td>1</td><td style="text-align:left">Tatis 112.5 at 3.21 ft (flat bat)</td></tr>
+  <tr><td>Slider</td><td>1</td><td>1</td><td style="text-align:left">Machado double, middle-in</td></tr>
+ </table></div>
+ <p class="note" style="margin-top:10px">Both of his changeup strikeouts in the two games were below the knees (Bowen 0.84 ft, Andujar force-out at 1.23 ft). The location rule is the fix, not the pitch mix.</p>
+
+ <h2>Last October</h2>
+ <p>9/30/2025, Wild Card Game 1 at Wrigley: 4.1 IP, 1 R, Cubs won 3-1. Cronenworth went 0-for-2 with a changeup strikeout. Machado was held to an out and a walk. Bogaerts doubled off a fastball at 109 EV.</p>
+
+ <h2>What's different now</h2>
+ <div class="two">
+  <div class="panel"><h4>Four-seam velocity by start, 2026</h4><svg viewBox='0 0 560 90' class='spark' role='img' aria-label='Fastball velocity by start'><text x='4' y='78.0' class='tk'>91</text><text x='4' y='18.0' class='tk'>95</text><polyline points='20.0,40.5 44.8,57.0 69.5,51.0 94.3,54.0 119.0,63.0 143.8,48.0 168.6,39.0 193.3,37.5 218.1,51.0 242.9,48.0 267.6,55.5 292.4,40.5 317.1,49.5 341.9,52.5 366.7,49.5 391.4,49.5 416.2,37.5 441.0,48.0 465.7,52.5 490.5,57.0 515.2,34.5 540.0,34.5' fill='none' stroke='var(--sky)' stroke-width='2'/><circle cx='540.0' cy='34.5' r='4' fill='var(--red)'/><text x='536.0' y='26.5' text-anchor='end' class='tk hi'>93.7</text></svg><p class="note">Finished at 93.7 in each of his last two. The 4/27 and 6/30 Padres starts were 92.4 and 93.4.</p></div>
+  <div class="panel"><h4>Four-seam ride (IVB, in.) by start</h4><svg viewBox='0 0 560 90' class='spark' role='img' aria-label='Fastball induced vertical break by start'><text x='4' y='78.0' class='tk'>9</text><text x='4' y='18.0' class='tk'>15</text><polyline points='20.0,31.0 44.8,32.0 69.5,32.0 94.3,22.0 119.0,45.0 143.8,48.0 168.6,60.0 193.3,46.0 218.1,49.0 242.9,63.0 267.6,54.0 292.4,59.0 317.1,60.0 341.9,60.0 366.7,63.0 391.4,46.0 416.2,48.0 441.0,65.0 465.7,55.0 490.5,58.0 515.2,62.0 540.0,55.0' fill='none' stroke='var(--sky)' stroke-width='2'/><circle cx='540.0' cy='55.0' r='4' fill='var(--red)'/><text x='536.0' y='47.0' text-anchor='end' class='tk hi'>11.0</text></svg><p class="note">Down from 14.3" in the April Padres start to 11.0". Less ride means the fastball has to live higher to keep missing bats.</p></div>
+ </div>
 </section>
 
-<!-- ================= ARSENAL ================= -->
-<section id="arsenal">
-  <div class="wrap">
-    <h2>Arsenal</h2>
-    <p class="lede">Four real pitches, one show-me sinker. Shapes and spin below are season averages; usage splits by batter side tell the actual story.</p>
-
-    <div class="pitch">
-      <div class="phead"><span class="pbadge disp">FF</span><span class="pname">Four-Seam</span><span class="puse">47% overall · 49% vs RHB · 38% vs LHB</span></div>
-      <div class="pbody">
-        <div class="pstat"><div class="v mono">92.7</div><div class="l">Velo</div></div>
-        <div class="pstat"><div class="v mono">2321</div><div class="l">Spin</div></div>
-        <div class="pstat"><div class="v mono">12.4"</div><div class="l">IVB</div></div>
-        <div class="pstat"><div class="v mono">13.9"</div><div class="l">Arm-side run</div></div>
-        <div class="pstat"><div class="v mono">6.3'</div><div class="l">Extension</div></div>
-        <div class="pstat"><div class="v mono">55%</div><div class="l">Zone</div></div>
-        <div class="pstat"><div class="v mono">17%</div><div class="l">Whiff vs R</div></div>
-        <div class="pstat"><div class="v mono">.436</div><div class="l">xwOBAcon vs R</div></div>
-      </div>
-      <div class="pnote"><strong>Honest read:</strong> average ride, above-average run, and it's carrying the damage — four of the six homers allowed and 95+ mph average exit velo from both sides. It earns its keep <strong>up in the zone and above it</strong> as the tunnel-setter and the two-strike ladder. In the middle third it is the most hittable pitch in the bag.</div>
-    </div>
-
-    <div class="pitch">
-      <div class="phead"><span class="pbadge ch disp">CH</span><span class="pname">Changeup</span><span class="puse">27% overall · 32% vs RHB · 2-strike pitch 34% vs RHB</span></div>
-      <div class="pbody">
-        <div class="pstat"><div class="v mono">79.0</div><div class="l">Velo</div></div>
-        <div class="pstat"><div class="v mono">1805</div><div class="l">Spin</div></div>
-        <div class="pstat"><div class="v mono">3.6"</div><div class="l">IVB</div></div>
-        <div class="pstat"><div class="v mono">16.4"</div><div class="l">Fade</div></div>
-        <div class="pstat"><div class="v mono">13.7</div><div class="l">Off FF (mph)</div></div>
-        <div class="pstat"><div class="v mono">41%</div><div class="l">Zone</div></div>
-        <div class="pstat"><div class="v mono">28.5%</div><div class="l">Whiff vs R</div></div>
-        <div class="pstat"><div class="v mono">28.4%</div><div class="l">CSW vs R</div></div>
-      </div>
-      <div class="pnote"><strong>The moneymaker.</strong> Nearly 9" of vertical separation and 2.5" of extra fade off the four-seam, at a 14-mph gap — a genuine kill pitch against right-handed bats when it starts on the FF line and dies below the knees, arm side. Both changeup homers this year were elevated mistakes; <strong>the pitch has no business above the thigh.</strong></div>
-    </div>
-
-    <div class="pitch">
-      <div class="phead"><span class="pbadge sl disp">SL</span><span class="pname">Slider</span><span class="puse">16% overall · 44% vs LHB · 2-strike pitch 47% vs LHB</span></div>
-      <div class="pbody">
-        <div class="pstat"><div class="v mono">83.0</div><div class="l">Velo</div></div>
-        <div class="pstat"><div class="v mono">2554</div><div class="l">Spin</div></div>
-        <div class="pstat"><div class="v mono">1.8"</div><div class="l">IVB</div></div>
-        <div class="pstat"><div class="v mono">1.3"</div><div class="l">Glove-side</div></div>
-        <div class="pstat"><div class="v mono">40%</div><div class="l">Zone</div></div>
-        <div class="pstat"><div class="v mono">48.7%</div><div class="l">Whiff vs L</div></div>
-        <div class="pstat"><div class="v mono">.278</div><div class="l">xwOBAcon vs L</div></div>
-        <div class="pstat"><div class="v mono">.408</div><div class="l">xwOBAcon vs R</div></div>
-      </div>
-      <div class="pnote"><strong>A same-side weapon, full stop.</strong> Gyro-heavy shape — depth over sweep — that lefty bats chase off the back foot all night (49% whiff). Against righties it flips: 96 mph exit velo when they connect. <strong>Platoon-lock this pitch:</strong> lefties see it constantly, righties see it almost never — and the one righty who must never see it is hitting cleanup.</div>
-    </div>
-
-    <div class="pitch">
-      <div class="phead"><span class="pbadge cu disp">CU</span><span class="pname">Curveball</span><span class="puse">10% overall · first-pitch 25% vs RHB</span></div>
-      <div class="pbody">
-        <div class="pstat"><div class="v mono">73.3</div><div class="l">Velo</div></div>
-        <div class="pstat"><div class="v mono">2277</div><div class="l">Spin</div></div>
-        <div class="pstat"><div class="v mono">-6.9"</div><div class="l">IVB</div></div>
-        <div class="pstat"><div class="v mono">8.8"</div><div class="l">Sweep</div></div>
-        <div class="pstat"><div class="v mono">43%</div><div class="l">Zone</div></div>
-        <div class="pstat"><div class="v mono">40.5%</div><div class="l">CSW vs R</div></div>
-        <div class="pstat"><div class="v mono">.138</div><div class="l">xwOBAcon vs R</div></div>
-        <div class="pstat"><div class="v mono">73.0</div><div class="l">EV vs R</div></div>
-      </div>
-      <div class="pnote"><strong>The strike thief.</strong> Best CSW in the arsenal and hitters do nothing with it when they do swing — 73 mph average exit velo. Already a quarter of first pitches to righties. Against a Pittsburgh lineup full of early takers and free-swinging bottom-third bats, this pitch buys 0-1 all night for free.</div>
-    </div>
-
-    <div class="pitch">
-      <div class="phead"><span class="pbadge si disp">SI</span><span class="pname">Sinker</span><span class="puse">4 thrown all season</span></div>
-      <div class="pnote" style="border-top:0">Show-me only. 91.5 with 18.7" of run. If it appears, it's a first-pitch surprise to steal a take — nothing more.</div>
-    </div>
-  </div>
+<section id="hitters" hidden>
+ <h2>Padres hitters vs left-handed pitching, 2026</h2>
+ <p class="note">In batting order. Numbers are against lefties this season unless noted. Receipts are real plate appearances against Boyd.</p>
+ <article class='hc red'>
+<header><span class='ord'>1</span><div><h3>Fernando Tatis Jr.</h3><p class='meta'>RF · Bats R · 160 PA vs LHP</p></div><span class='chip red'>RED BOX</span></header>
+<p class='head'>Best bat in the building vs lefties. Only one door, and it is below the knees.</p>
+<div class='stats'>
+<div><b class='r'>.398</b><span>xwOBA vs L</span></div>
+<div><b>18.1%</b><span>K</span></div>
+<div><b>20.5%</b><span>Chase</span></div>
+<div><b>50.6%</b><span>1st-pitch zone take</span></div>
+<div><b>73.5</b><span>Bat mph</span></div>
+<div><b>6.1°</b><span>Attack angle</span></div>
+</div>
+<div class='fam'><span>Fastballs <b class='r'>.433</b></span><span>Offspeed <b class='y'>.330</b></span><span>Breaking <b class='r'>.390</b></span></div>
+<div class='aa'><div><h4 class='gtxt'>Attack</h4><ul><li>CH below the knees: .103 xwOBA, 58% whiff vs LHP</li><li>FF above the zone only in two-strike counts: 71% whiff</li></ul></div><div><h4 class='rtxt'>Avoid</h4><ul><li>Any zone fastball: .429 low / .443 upper-third xwOBA vs LHP</li><li>Hitters' counts (.521 xwOBA ahead in count)</li><li>Knee-high CH that stays in (6/30 HR: 2-2 CH at 1.80 ft, inner third, 106 EV)</li></ul></div></div>
+<p class='bat'><b>Bat path.</b> Flat bat (6.1° attack angle), 73.5 mph. Flat paths cover the letters, so the ride has to finish above the zone to miss him.</p>
+<p class='rec'><b>Receipts.</b> 2026 vs Boyd: 112.5 EV single on a letters FF, HR on a knee-high CH. Career 14 PA, .336 wOBA.</p>
+</article><article class='hc green'>
+<header><span class='ord'>2</span><div><h3>Samad Taylor</h3><p class='meta'>LF · Bats R · 50 PA vs LHP</p></div><span class='chip green'>ATTACK</span></header>
+<p class='head'>Softest bat in the lineup, and he swings early. Pound the zone.</p>
+<div class='stats'>
+<div><b class='g'>.240</b><span>xwOBA vs L</span></div>
+<div><b>28.0%</b><span>K</span></div>
+<div><b>33.3%</b><span>Chase</span></div>
+<div><b>33.3%</b><span>1st-pitch zone take</span></div>
+<div><b>62.8</b><span>Bat mph</span></div>
+<div><b>11.1°</b><span>Attack angle</span></div>
+</div>
+<div class='fam'><span>Fastballs <b class='g'>.238</b></span><span>Offspeed <b class='g'>.253</b></span><span>Breaking <b class='g'>.232</b></span></div>
+<div class='aa'><div><h4 class='gtxt'>Attack</h4><ul><li>Strike one with the fastball: 46% first-pitch swing, .229 FF xwOBA vs LHP</li><li>FF at the letters: .238 upper third</li></ul></div><div><h4 class='rtxt'>Avoid</h4><ul><li>Nothing banned; just don't walk him in front of Machado</li></ul></div></div>
+<p class='bat'><b>Bat path.</b> 62.8 mph bat, lowest on the roster. Steep 11° attack angle means elevated ride beats him.</p>
+<p class='rec'><b>Receipts.</b> 6/30: flyout on first-pitch FF, K on an above-zone FF (3.80 ft), soft CH single 73 EV.</p>
+</article><article class='hc red'>
+<header><span class='ord'>3</span><div><h3>Manny Machado</h3><p class='meta'>3B · Bats R · 157 PA vs LHP</p></div><span class='chip red'>RED BOX</span></header>
+<p class='head'>Owns Boyd for his career (.514 wOBA, 22 PA). The book is FF up, CH buried, nothing in between.</p>
+<div class='stats'>
+<div><b class='y'>.325</b><span>xwOBA vs L</span></div>
+<div><b>21.0%</b><span>K</span></div>
+<div><b>31.3%</b><span>Chase</span></div>
+<div><b>54.8%</b><span>1st-pitch zone take</span></div>
+<div><b>72.7</b><span>Bat mph</span></div>
+<div><b>6.8°</b><span>Attack angle</span></div>
+</div>
+<div class='fam'><span>Fastballs <b class='y'>.357</b></span><span>Offspeed <b class='g'>.277</b></span><span>Breaking <b class='y'>.302</b></span></div>
+<div class='aa'><div><h4 class='gtxt'>Attack</h4><ul><li>FF upper third / above: .321 / .305 xwOBA, 40% whiff above</li><li>CH below the knees: .197 xwOBA, 48% whiff</li></ul></div><div><h4 class='rtxt'>Avoid</h4><ul><li>Low fastballs: .416 xwOBA vs LHP</li><li>Zone-height changeups (4/27: CH double at 2.10 ft in a 2-0 count)</li><li>Any hitters'-count fastball (6/30 HR: 2-1 FF, 2.59 ft)</li></ul></div></div>
+<p class='bat'><b>Bat path.</b> Flat 6.8° attack angle, 72.7 mph, 61% air rate vs lefties. He lifts what is left belt-high.</p>
+<p class='rec'><b>Receipts.</b> 2026 vs Boyd: 3 XBH + HR in 7 PA. Damage came on a 2-0 CH, a 1-2 SL middle-in, and a 2-1 FF.</p>
+</article><article class='hc yellow'>
+<header><span class='ord'>4</span><div><h3>Ty France</h3><p class='meta'>1B · Bats R · 137 PA vs LHP</p></div><span class='chip yellow'>CAUTION</span></header>
+<p class='head'>Elite if you miss low; lost if you go up or spin it.</p>
+<div class='stats'>
+<div><b class='y'>.337</b><span>xwOBA vs L</span></div>
+<div><b>24.8%</b><span>K</span></div>
+<div><b>32.4%</b><span>Chase</span></div>
+<div><b>58.2%</b><span>1st-pitch zone take</span></div>
+<div><b>70.0</b><span>Bat mph</span></div>
+<div><b>10.4°</b><span>Attack angle</span></div>
+</div>
+<div class='fam'><span>Fastballs <b class='r'>.377</b></span><span>Offspeed <b class='y'>.344</b></span><span>Breaking <b class='g'>.257</b></span></div>
+<div class='aa'><div><h4 class='gtxt'>Attack</h4><ul><li>Curveball: .115 xwOBA, 50% whiff vs LHP</li><li>FF upper third .249, above zone 65% whiff</li><li>CH below knees: 74% whiff, .170</li></ul></div><div><h4 class='rtxt'>Avoid</h4><ul><li>Low fastballs: .527 xwOBA vs LHP, highest single hole on the roster</li><li>Zone changeups: .466</li><li>Hitters' counts: .558</li></ul></div></div>
+<p class='bat'><b>Bat path.</b> Steep 10.4° attack angle, 70.0 mph. Matches low pitches, misses elevated ride.</p>
+<p class='rec'><b>Receipts.</b> 2026 vs Boyd: four hard-hit balls (104, 102, 103, 95 EV). Three of four were fastballs 1.7–2.4 ft, the middle band.</p>
+</article><article class='hc yellow'>
+<header><span class='ord'>5</span><div><h3>Jackson Merrill</h3><p class='meta'>CF · Bats L · 181 PA vs LHP</p></div><span class='chip yellow'>CAUTION</span></header>
+<p class='head'>The only lefty in the heart of the order. Slider away, ride above the zone.</p>
+<div class='stats'>
+<div><b class='y'>.317</b><span>xwOBA vs L</span></div>
+<div><b>26.5%</b><span>K</span></div>
+<div><b>37.0%</b><span>Chase</span></div>
+<div><b>43.7%</b><span>1st-pitch zone take</span></div>
+<div><b>71.5</b><span>Bat mph</span></div>
+<div><b>8.8°</b><span>Attack angle</span></div>
+</div>
+<div class='fam'><span>Fastballs <b class='y'>.343</b></span><span>Offspeed <b class='g'>.173</b></span><span>Breaking <b class='y'>.303</b></span></div>
+<div class='aa'><div><h4 class='gtxt'>Attack</h4><ul><li>Slider: .289 xwOBA vs LHP (Boyd SL vs LHB: .186)</li><li>FF above zone: 67% whiff, .078 xwOBA</li><li>He chases 37% and walks 3%, so expand</li></ul></div><div><h4 class='rtxt'>Avoid</h4><ul><li>Low fastballs: .415</li><li>Middle-band FF (2026: 107.9 and 103.3 EV singles, both 2.2–2.6 ft)</li></ul></div></div>
+<p class='bat'><b>Bat path.</b> Steepest swing tilt in the lineup (38°), 71.5 mph. Swings at 46% of first pitches.</p>
+<p class='rec'><b>Receipts.</b> Career 10 PA .305 wOBA. Every out on the slider; every hard hit on a middle fastball.</p>
+</article><article class='hc yellow'>
+<header><span class='ord'>6</span><div><h3>Austin Hays</h3><p class='meta'>DH · Bats R · 51 PA vs LHP</p></div><span class='chip yellow'>CAUTION</span></header>
+<p class='head'>Swings at strike one (74% of first-pitch strikes). Do not give him a first-pitch heater.</p>
+<div class='stats'>
+<div><b class='y'>.352</b><span>xwOBA vs L</span></div>
+<div><b>23.5%</b><span>K</span></div>
+<div><b>28.3%</b><span>Chase</span></div>
+<div><b>25.8%</b><span>1st-pitch zone take</span></div>
+<div><b>70.3</b><span>Bat mph</span></div>
+<div><b>14.9°</b><span>Attack angle</span></div>
+</div>
+<div class='fam'><span>Fastballs <b class='r'>.440</b></span><span>Offspeed <b class='g'>.254</b></span><span>Breaking <b class='y'>.336</b></span></div>
+<div class='aa'><div><h4 class='gtxt'>Attack</h4><ul><li>Curveball: .001 xwOBA, 44% whiff vs LHP (25 pitches)</li><li>Start with the curve or a CH off the plate</li></ul></div><div><h4 class='rtxt'>Avoid</h4><ul><li>First-pitch zone fastball</li><li>Low FF .468 / sinker .623</li></ul></div></div>
+<p class='bat'><b>Bat path.</b> Steepest attack angle on the team (14.9°), 70.3 mph. Small vs-LHP sample (51 PA).</p>
+<p class='rec'><b>Receipts.</b> Career vs Boyd 6 PA: triple on a FF (103 EV) in 2025.</p>
+</article><article class='hc green'>
+<header><span class='ord'>7</span><div><h3>Xander Bogaerts</h3><p class='meta'>SS · Bats R · 156 PA vs LHP</p></div><span class='chip green'>ATTACK</span></header>
+<p class='head'>Takes strike one 67% of the time. Take it, then go below.</p>
+<div class='stats'>
+<div><b class='y'>.328</b><span>xwOBA vs L</span></div>
+<div><b>12.2%</b><span>K</span></div>
+<div><b>24.9%</b><span>Chase</span></div>
+<div><b>66.7%</b><span>1st-pitch zone take</span></div>
+<div><b>70.1</b><span>Bat mph</span></div>
+<div><b>9.9°</b><span>Attack angle</span></div>
+</div>
+<div class='fam'><span>Fastballs <b class='r'>.400</b></span><span>Offspeed <b class='g'>.230</b></span><span>Breaking <b class='g'>.232</b></span></div>
+<div class='aa'><div><h4 class='gtxt'>Attack</h4><ul><li>First-pitch FF for a free strike</li><li>CH below the knees: .024 xwOBA, 57% whiff</li><li>Slider: .126 xwOBA, 46% whiff</li></ul></div><div><h4 class='rtxt'>Avoid</h4><ul><li>Zone FF deep in counts (.400 vs FB), especially 3-ball counts (.452 in hitters' counts)</li></ul></div></div>
+<p class='bat'><b>Bat path.</b> 70.1 mph, 12% K rate: contact hitter. He will put the ball in play; make it the changeup.</p>
+<p class='rec'><b>Receipts.</b> Career 24 PA .344. 2026: four PA, all on CH/FF, one soft single (72.8 EV).</p>
+</article><article class='hc green'>
+<header><span class='ord'>8</span><div><h3>Jake Cronenworth</h3><p class='meta'>2B · Bats L · 92 PA vs LHP</p></div><span class='chip green'>ATTACK</span></header>
+<p class='head'>.241 xwOBA vs lefties. Attack.</p>
+<div class='stats'>
+<div><b class='g'>.241</b><span>xwOBA vs L</span></div>
+<div><b>16.3%</b><span>K</span></div>
+<div><b>31.1%</b><span>Chase</span></div>
+<div><b>62.0%</b><span>1st-pitch zone take</span></div>
+<div><b>68.3</b><span>Bat mph</span></div>
+<div><b>6.4°</b><span>Attack angle</span></div>
+</div>
+<div class='fam'><span>Fastballs <b class='g'>.289</b></span><span>Offspeed <b class='g'>.126</b></span><span>Breaking <b class='g'>.192</b></span></div>
+<div class='aa'><div><h4 class='gtxt'>Attack</h4><ul><li>Slider: .156 xwOBA vs LHP</li><li>Strike one; he takes 62% of first-pitch strikes</li><li>CH works (0-for-4 career, 2 K on CH)</li></ul></div><div><h4 class='rtxt'>Avoid</h4><ul><li>Four-seam in the zone: .407 xwOBA; he sees it well</li></ul></div></div>
+<p class='bat'><b>Bat path.</b> 68.3 mph, flat 6.4° path. Beat him with spin away.</p>
+<p class='rec'><b>Receipts.</b> Career vs Boyd 0-for-4, 2 K (both changeups).</p>
+</article><article class='hc green'>
+<header><span class='ord'>9</span><div><h3>Luis Campusano</h3><p class='meta'>C · Bats R · 52 PA vs LHP</p></div><span class='chip green'>ATTACK</span></header>
+<p class='head'>Most patient first-pitch hitter on the team (73% zone take). Free strike one, then work.</p>
+<div class='stats'>
+<div><b class='y'>.337</b><span>xwOBA vs L</span></div>
+<div><b>19.2%</b><span>K</span></div>
+<div><b>29.6%</b><span>Chase</span></div>
+<div><b>72.7%</b><span>1st-pitch zone take</span></div>
+<div><b>69.9</b><span>Bat mph</span></div>
+<div><b>10.4°</b><span>Attack angle</span></div>
+</div>
+<div class='fam'><span>Fastballs <b class='r'>.364</b></span><span>Offspeed <b class='g'>.245</b></span><span>Breaking <b class='y'>.330</b></span></div>
+<div class='aa'><div><h4 class='gtxt'>Attack</h4><ul><li>First-pitch FF</li><li>CH: .245 xwOBA vs LHP</li><li>FF above zone</li></ul></div><div><h4 class='rtxt'>Avoid</h4><ul><li>Low FF .421</li><li>Pitching around him: 13.5% walk rate vs LHP</li></ul></div></div>
+<p class='bat'><b>Bat path.</b> 69.9 mph, 10.4° attack angle.</p>
+<p class='rec'><b>Receipts.</b> No history vs Boyd.</p>
+</article>
+ <h2>Bench</h2>
+ <div class="bench"><div class='bn'><h4>Gavin Sheets <span>L</span></h4><p>.247 xwOBA vs LHP, 28% K. Slider/sweeper .168. If he pinch-hits, it is for a righty reliever, not you.</p></div><div class='bn'><h4>Miguel Andujar <span>R</span></h4><p>Chase 44% vs LHP. CH .155. 2026 vs Boyd: 106.3 EV single on a CH at 2.68 ft. Changeup yes, below the knees only.</p></div><div class='bn'><h4>Freddy Fermin <span>R</span></h4><p>.272 xwOBA vs LHP. Breaking balls 50% whiff. FF up .289.</p></div><div class='bn'><h4>Jase Bowen <span>R</span></h4><p>38% K vs LHP. CH 58% whiff. Throw it.</p></div><div class='bn'><h4>Dustin Harris <span>L</span></h4><p>64 mph bat, 22 PA vs LHP. Pull-heavy (67%). Soft away.</p></div><div class='bn'><h4>Ethan Salas <span>L</span></h4><p>7 PA vs LHP. Unknown quantity; spin away.</p></div></div>
 </section>
 
-<!-- ================= HITTERS ================= -->
-<section id="hitters">
-  <div class="wrap">
-    <h2>The Hitters</h2>
-    <p class="lede">Lineup below is projected from Pittsburgh's actual starting nines against left-handed pitching — the 3-4-5 of Reynolds, Valdez and O'Hearn has been carved in stone in every July game against a lefty. All hitter numbers — outcomes and swing mechanics — are 2026 vs LHP only. The mechanical headline: <strong style="color:var(--day)">the entire heart of this order swings 19–25° uphill at offspeed</strong>, and the changeup carries 3.6" of ride against paths built for 15. The plans below aren't just outcome patterns — the swings explain them.</p>
+<section id="arsenal" hidden>
+ <h2>Arsenal, 2026</h2>
+ <div class="tbl"><table>
+  <tr><th>Pitch</th><th>Use</th><th>vs R</th><th>vs L</th><th>Velo</th><th>IVB</th><th>HB</th><th>Spin</th><th>Whiff</th><th>CSW</th><th>xwOBA R</th><th>xwOBA L</th><th>Run value</th></tr>
+  <tr><td class='pt pt-FF'>4-Seam</td><td>44%</td><td>47%</td><td>35%</td><td>92.8</td><td>11.5</td><td>-13.9</td><td>2302</td><td>15.4%</td><td>25.1%</td><td class='y'>.354</td><td class='r'>.484</td><td class='r'>-3.9</td></tr><tr><td class='pt pt-CH'>Changeup</td><td>28%</td><td>34%</td><td>11%</td><td>78.7</td><td>3.6</td><td>-15.9</td><td>1775</td><td>26.9%</td><td>27.3%</td><td class='y'>.312</td><td class='y'>.347</td><td class='g'>+4.2</td></tr><tr><td class='pt pt-SL'>Slider</td><td>14%</td><td>7%</td><td>36%</td><td>83.1</td><td>1.5</td><td>1.2</td><td>2537</td><td>37.0%</td><td>27.2%</td><td class='g'>.296</td><td class='g'>.186</td><td class='g'>+2.7</td></tr><tr><td class='pt pt-CU'>Curveball</td><td>12%</td><td>12%</td><td>13%</td><td>73.1</td><td>-8.9</td><td>11.4</td><td>2422</td><td>25.0%</td><td>36.4%</td><td class='g'>.235</td><td class='g'>.202</td><td class='g'>+1.6</td></tr><tr><td class='pt pt-SI'>Sinker</td><td>1%</td><td>0%</td><td>6%</td><td>91.9</td><td>8.8</td><td>-16.9</td><td>2316</td><td>12.5%</td><td>21.4%</td><td class=''>—</td><td class='g'>.266</td><td class='g'>+0.9</td></tr>
+ </table></div>
+ <p class="note" style="margin-top:8px">HB is arm-side positive. Arm angle 23°, release height 5.35 ft. Four-seam approach angle at the top of the zone is −4.3°, flat for the slot. That is why the ride still plays up even with the IVB loss.</p>
 
-    <div class="lineupwrap">
-      <aside class="lupanel">
-        <h4>Projected Lineup vs Boyd</h4>
-        <div class="lurow"><span class="n disp">1</span> Nick Gonzales · 3B <span class="b">R</span></div>
-        <div class="lurow"><span class="n disp">2</span> Jared Triolo · CF/SS <span class="b">R</span></div>
-        <div class="lurow"><span class="n disp">3</span> Bryan Reynolds · LF <span class="b">S</span></div>
-        <div class="lurow dm"><span class="n disp">4</span> <strong>Esmerlyn Valdez · RF</strong> <span class="b">R</span></div>
-        <div class="lurow"><span class="n disp">5</span> Ryan O'Hearn · 1B <span class="b L">L</span></div>
-        <div class="lurow"><span class="n disp">6</span> Marcell Ozuna · DH <span class="b">R</span></div>
-        <div class="lurow"><span class="n disp">7</span> Brandon Lowe · 2B <span class="b L">L</span></div>
-        <div class="lurow"><span class="n disp">8</span> Rafael Flores Jr. · C <span class="b">R</span></div>
-        <div class="lurow"><span class="n disp">9</span> Billy Cook · CF <span class="b">R</span></div>
-        <h4 style="margin-top:18px">Bench</h4>
-        <div class="lurow">Henry Davis · C <span class="b">R</span></div>
-        <div class="lurow">Jake Mangum · OF <span class="b">S</span></div>
-        <div class="lurow">Jacob Gonzalez · IF <span class="b L">L</span></div>
-        <div class="lurow">Tyler Callihan · IF/OF <span class="b L">L</span></div>
-        <p class="lunote">Mangum (foot, day-to-day) leads off when healthy — if he starts, Triolo likely slides down or sits. Oneil Cruz (hand), Spencer Horwitz (hamstring) and Endy Rodríguez are on the IL: three left-handed bats removed from the picture. Expect 7 righty starters.</p>
-      </aside>
+ <h2>Where each pitch wins</h2>
+ <div class="two">
+  <div class="panel"><h4>Four-seam by height</h4>
+   <div class="tbl"><table><tr><th>Band</th><th>Pitches</th><th>Whiff</th><th>xwOBA</th><th>Runs</th></tr>
+   <tr><td>Below zone third</td><td>113</td><td>10.9%</td><td class="r">.465</td><td class="r">−2.0</td></tr>
+   <tr><td>Belt</td><td>247</td><td>6.1%</td><td class="r">.429</td><td class="r">−4.1</td></tr>
+   <tr><td>Letters</td><td>248</td><td>13.3%</td><td class="y">.372</td><td class="g">+3.9</td></tr>
+   <tr><td>Above zone</td><td>254</td><td>35.0%</td><td class="g">.277</td><td class="r">−1.7</td></tr></table></div>
+   <p class="note">Above the zone gets whiffs but costs runs when they take it for ball one. Use it with two strikes.</p></div>
+  <div class="panel"><h4>Changeup vs RHB by height</h4>
+   <div class="tbl"><table><tr><th>Band</th><th>Pitches</th><th>Whiff</th><th>xwOBA</th></tr>
+   <tr><td>Below knees (&lt;1.5 ft)</td><td>157</td><td class="g">45.9%</td><td class="g">.291</td></tr>
+   <tr><td>Low zone (1.5–2.2)</td><td>187</td><td>28.0%</td><td class="y">.305</td></tr>
+   <tr><td>Mid-thigh and up</td><td>150</td><td class="r">8.3%</td><td class="y">.345</td></tr></table></div>
+   <p class="note">Last four starts: 38% changeups to righties, .261 xwOBA, 28% whiff. It is the pitch of his September.</p></div>
+ </div>
 
-      <div>
-        <div class="hcard">
-          <div class="hhead"><span class="hslot disp">1</span><span class="hname">Nick Gonzales</span><span class="hmeta">R · 3B</span><span class="hline">.274/.328/.340 · 1 HR</span></div>
-          <div class="hbody">
-            <div class="aa attack"><span class="tag2">Attack</span><span>Changeup down-and-away, curveball for early strikes.</span></div>
-            <div class="aa avoid"><span class="tag2">Avoid</span><span>Trying to blow fastballs past him in the zone — he doesn't miss them.</span></div>
-            <p class="why"><b>41% whiff on lefty changeups, 47% on curves</b> — but only 11% on four-seams. Contact is soft (83 mph avg) with zero slug, so fastballs to contact are fine; strikeouts come from the soft stuff.</p>
-            <div class="dna"><span class="tag2">Swing</span><span>69.7 mph bat · flattens to <b>3.6°</b> vs fastballs, steepens to <b>18.6°</b> vs offspeed — the path physically covers the heater and dives under the change. Below-average bat speed caps the damage either way.</span></div>
-          </div>
-        </div>
+ <h2>Pitch mix by count vs RHB</h2>
+ <div class="tbl"><table>
+  <tr><th>Count</th><th>FF</th><th>CH</th><th>SL</th><th>CU</th></tr>
+  <tr><td>First pitch</td><td>52%</td><td>20%</td><td>4%</td><td>24%</td></tr>
+  <tr><td>Ahead</td><td>42%</td><td>38%</td><td>11%</td><td>9%</td></tr>
+  <tr><td>Behind</td><td>50%</td><td>41%</td><td>4%</td><td>4%</td></tr>
+  <tr><td>Two strikes</td><td>39%</td><td>38%</td><td>15%</td><td>8%</td></tr>
+ </table></div>
 
-        <div class="hcard">
-          <div class="hhead"><span class="hslot disp">2</span><span class="hname">Jared Triolo</span><span class="hmeta">R · CF/SS</span><span class="hline">.273/.333/.348 · 0 HR</span></div>
-          <div class="hbody">
-            <div class="aa attack"><span class="tag2">Attack</span><span>Fastballs and sliders in the zone — pitch to contact, let the defense eat.</span></div>
-            <div class="aa avoid"><span class="tag2">Avoid</span><span>Wasting changeups — it's the only pitch he damages (.418 xwOBAcon).</span></div>
-            <p class="why"><b>7% whiff on lefty fastballs, 0% on sliders</b> — you will not strike him out with hard stuff, and you don't need to: 84.6 mph average exit velo, no home runs off lefties. Quick outs live here.</p>
-            <div class="dna"><span class="tag2">Swing</span><span>69.9 mph bat, <b>2.3°</b> vs fastballs — one of the flattest hard-stuff paths on the club. That's why the whiffs aren't there and why the contact can't hurt you. Don't chase the K; chase the out.</span></div>
-          </div>
-        </div>
-
-        <div class="hcard">
-          <div class="hhead"><span class="hslot disp">3</span><span class="hname">Bryan Reynolds</span><span class="hmeta">S (bats R) · LF</span><span class="hline">.302/.389/.524 · 6 HR</span></div>
-          <div class="hbody">
-            <div class="aa attack"><span class="tag2">Attack</span><span>Elevated four-seams (37% whiff up) and sliders expanding off the outer edge — he chases spin away at 48%.</span></div>
-            <div class="aa avoid"><span class="tag2">Avoid</span><span>Curveballs anywhere near the zone — .559 xwOBAcon, 94 mph EV. The strike thief gets pickpocketed here.</span></div>
-            <p class="why">The professional at-bat in this lineup. Walks (17 BB), hits everything reasonably well, and punishes lefty breaking balls that catch plate. Work edges, accept the walk in a big spot.</p>
-            <div class="dna"><span class="tag2">Swing</span><span>73.8 mph bat — but watch the split: <b>72.0 vs fastballs at a dead-flat 0.6°</b>, jumping to <b>74–76 with 14° of launch on spin and offspeed</b>. His A-swing is saved for the soft stuff. Elevated ride forces the flat B-swing — misses up are barrel-under, not damage.</span></div>
-          </div>
-        </div>
-
-        <div class="hcard threat">
-          <div class="hhead"><span class="hslot disp">4</span><span class="hname">Esmerlyn Valdez</span><span class="hmeta">R · RF</span><span class="hline">.359/.457/1.051 · 7 HR in 46 PA</span><span class="threatlabel">Do Not Feed</span></div>
-          <div class="hbody">
-            <div class="aa attack"><span class="tag2">Attack</span><span>Changeups, changeups, changeups — down and away, tunneled off the fastball. Ladder four-seams above the eyes with two strikes.</span></div>
-            <div class="aa avoid"><span class="tag2">Avoid</span><span>ANY slider (1.136 xwOBAcon — he slugs it out of the yard). Any fastball in the zone (100.9 mph average exit velo).</span></div>
-            <p class="why"><b>69% whiff rate on lefty changeups. 47% whiff on elevated fastballs.</b> Everything else from a lefty hand gets launched — a 1.508 OPS is not a small-sample joke when the contact quality backs it up. He is the single decision that swings this start. Three at-bats, one plan, no deviation. Walking him with a base open is a win.</p>
-            <div class="dna"><span class="tag2">Swing</span><span><b>75.0 mph average bat speed — fastest on the team</b>, 7.9-ft swing, max intent (75.6) against fastballs. But the path steepens to <b>22.8° against offspeed</b>: Boyd's changeup rides 3.6" and fades 16" under a swing committed 23° uphill. The 69% whiff isn't luck — it's geometry. Same story up: a 10.9° fastball path swings under 12.4" of carry above the zone.</span></div>
-          </div>
-        </div>
-
-        <div class="hcard">
-          <div class="hhead"><span class="hslot disp">5</span><span class="hname">Ryan O'Hearn</span><span class="hmeta">L · 1B</span><span class="hline">.228/.275/.376 · 4 HR</span></div>
-          <div class="hbody">
-            <div class="aa attack"><span class="tag2">Attack</span><span>Sliders down-and-in off the plate — 40% chase — and curveballs early.</span></div>
-            <div class="aa avoid"><span class="tag2">Avoid</span><span>Fastballs in the zone. He starts vs lefties for a reason: 10% whiff, .453 xwOBAcon, 94 mph EV on lefty heaters.</span></div>
-            <p class="why">The rare lefty bat Pittsburgh trusts against southpaws — because he's a fastball hitter regardless of hand. The standard lefty-lefty slider plan works; the lazy lefty-lefty fastball plan does not.</p>
-            <div class="dna"><span class="tag2">Swing</span><span>Modest 69.2 mph bat but the best squared-up rate on the roster vs LHP (.286 per swing) — a timing hitter, not a speed hitter. Against breaking balls the bat decays to <b>67.2 at 19°</b> — rolling over and reaching. The slider attacks the decay.</span></div>
-          </div>
-        </div>
-
-        <div class="hcard">
-          <div class="hhead"><span class="hslot disp">6</span><span class="hname">Marcell Ozuna</span><span class="hmeta">R · DH</span><span class="hline">.229/.312/.410 · 4 HR</span></div>
-          <div class="hbody">
-            <div class="aa attack"><span class="tag2">Attack</span><span>Changeup tunnel — 52% whiff — and slider chase below the zone (53% chase rate).</span></div>
-            <div class="aa avoid"><span class="tag2">Avoid</span><span>Fastballs in the zone (.479 xwOBAcon, 13% whiff) and anything breaking that hangs (.646 on sliders he reaches).</span></div>
-            <p class="why">Pure guess hitter at this stage: sells out for the heater, comes off the changeup badly. The FF/CH tunnel was built for this at-bat. Never give in on 3-2 — the walk is cheaper than the mistake.</p>
-            <div class="dna"><span class="tag2">Swing</span><span>Steepest shoulder plane in the lineup (38° tilt) and he actually swings <b>harder at offspeed (75.1) than fastballs (71.1)</b> — a guesser's signature. When the guess is heater and the changeup arrives, a 24.2° uphill hack meets a pitch falling out of the tunnel. That's the 52% whiff.</span></div>
-          </div>
-        </div>
-
-        <div class="hcard">
-          <div class="hhead"><span class="hslot disp">7</span><span class="hname">Brandon Lowe</span><span class="hmeta">L · 2B</span><span class="hline">.214/.258/.348 · 4 HR · 35% K</span></div>
-          <div class="hbody">
-            <div class="aa attack"><span class="tag2">Attack</span><span>Slider ladder down-and-in (47% whiff, 48% chase), four-seams above the zone (41% whiff up).</span></div>
-            <div class="aa avoid"><span class="tag2">Avoid</span><span>Fastballs middle — the pull-side pop is real (4 HR) and PNC's right field is short.</span></div>
-            <p class="why">The textbook lefty-slider victim: strikes out in over a third of his trips against southpaws. He's in there for the platoon homer threat — deny the one pitch that feeds it and he beats himself.</p>
-            <div class="dna"><span class="tag2">Swing</span><span><b>Steepest average path on the team vs LHP (16.6°)</b>, reaching 21–25° on spin and offspeed. The uppercut is the hole: gyro slider under it, ride fastball over it. Pull-oriented bat path plus PNC's short porch is exactly why nothing lives middle-in.</span></div>
-          </div>
-        </div>
-
-        <div class="hcard">
-          <div class="hhead"><span class="hslot disp">8</span><span class="hname">Rafael Flores Jr.</span><span class="hmeta">R · C</span><span class="hline">8 PA vs LHP · thin book</span></div>
-          <div class="hbody">
-            <div class="aa attack"><span class="tag2">Attack</span><span>Four-seams up (43% whiff on lefty heaters so far), spin below.</span></div>
-            <div class="aa avoid"><span class="tag2">Avoid</span><span>Grooving anything on reputation — the sample is tiny and he's reached in 4 of 8 trips.</span></div>
-            <p class="why">Rookie book. Early swing-and-miss on velocity up is the only signal — trust the eyes in-game over the numbers here.</p>
-            <div class="dna"><span class="tag2">Swing</span><span>Only 11 tracked swings vs LHP — directional at best: ~5.6° vs fastballs, ordinary bat speed. No mechanical red flags either way yet.</span></div>
-          </div>
-        </div>
-
-        <div class="hcard">
-          <div class="hhead"><span class="hslot disp">9</span><span class="hname">Billy Cook</span><span class="hmeta">R · CF</span><span class="hline">.192/.192/.308 · 11 K in 26 PA</span></div>
-          <div class="hbody">
-            <div class="aa attack"><span class="tag2">Attack</span><span>Everything out of the zone — 50% chase on fastballs and sliders. Elevated four-seam is the putaway (43% whiff up).</span></div>
-            <div class="aa avoid"><span class="tag2">Avoid</span><span>Free strikes. He'll get himself out; a zone mistake is the only way he wins.</span></div>
-            <p class="why">Zero walks, 42% strikeouts against lefties. The at-bat runs itself if nothing catches white.</p>
-            <div class="dna"><span class="tag2">Swing</span><span>Swings hard (73.5 vs fastballs) and steep (9.3°) with a long 7.8-ft swing — big leverage, late barrel. Ride up beats the length; spin down beats the plane. Both doors are open.</span></div>
-          </div>
-        </div>
-
-        <h3>Off the Bench</h3>
-
-        <div class="hcard">
-          <div class="hhead"><span class="hname">Henry Davis</span><span class="hmeta">R · C</span><span class="hline">.143/.140/.286 · 0 BB in 50 PA</span></div>
-          <div class="hbody">
-            <div class="aa attack"><span class="tag2">Attack</span><span>Changeups down (50% chase) and anything soft below the zone.</span></div>
-            <p class="why">Hasn't walked against a lefty all year. Expand immediately.</p>
-            <div class="dna"><span class="tag2">Swing</span><span>Real bat speed (73.9 vs fastballs) with a pull-angled path — the tools swing hard, the results don't follow. Changeups away from the pull-side barrel finish him.</span></div>
-          </div>
-        </div>
-
-        <div class="hcard">
-          <div class="hhead"><span class="hname">Jake Mangum</span><span class="hmeta">S · OF · foot, day-to-day</span><span class="hline">.286/.338/.317 · 0 HR</span></div>
-          <div class="hbody">
-            <div class="aa attack"><span class="tag2">Attack</span><span>Never throw a strike you don't need: 84% chase on changeups, 56% chase on fastballs.</span></div>
-            <div class="aa avoid"><span class="tag2">Avoid</span><span>Two-strike pitches in the zone — he's a 15% whiff contact pest with zero power.</span></div>
-            <p class="why">Slap-and-run profile. If he starts (leadoff), the goal is weak contact early, not the strikeout. The most extreme chaser on the roster.</p>
-            <div class="dna"><span class="tag2">Swing</span><span>Slowest bat on the club (66.7), shortest swing (6.7 ft), and a <b>negative attack angle (-3.9°) vs fastballs</b> — he chops down on heaters. He physically cannot lift Boyd's riding four-seam: elevated fastballs to him are ground balls and pop-ups, not risk. The only true "safe zone strike" in this lineup.</span></div>
-          </div>
-        </div>
-
-        <div class="hcard">
-          <div class="hhead"><span class="hname">Jacob Gonzalez</span><span class="hmeta">L · IF</span><span class="hline">4 PA vs LHP</span></div>
-          <div class="hbody">
-            <div class="aa attack"><span class="tag2">Attack</span><span>Slider away — .047 xwOBAcon against lefty sweep/slide this year.</span></div>
-            <p class="why">Standard lefty-lefty plan applies. Pinch-hit risk only.</p>
-            <div class="dna"><span class="tag2">Swing</span><span>Flat 3.5° vs fastballs with a 70 mph bat — a contact path, no lift. Spin below the zone stays the plan.</span></div>
-          </div>
-        </div>
-
-        <div class="hcard">
-          <div class="hhead"><span class="hname">Tyler Callihan</span><span class="hmeta">L · IF/OF</span><span class="hline">7 PA vs LHP</span></div>
-          <div class="hbody">
-            <div class="aa attack"><span class="tag2">Attack</span><span>Spin — he's seen 22 lefty pitches all season. Slider down-in, curve for strikes.</span></div>
-            <p class="why">Nearly no book. Treat as a standard young lefty bat: breaking-ball heavy.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+ <h2>Game log</h2>
+ <div class="tbl"><table>
+  <tr><th>Date</th><th>Opp</th><th>IP</th><th>H</th><th>K</th><th>BB</th><th>HR</th><th>Pitches</th><th>FF velo</th><th>FF IVB</th><th>Mix FF/CH/SL/CU</th><th>xwOBA</th></tr>
+  <tr><td>9/24</td><td>vs MIA</td><td>7.0</td><td>5</td><td>3</td><td>2</td><td>0</td><td>90</td><td>93.7</td><td>11.0</td><td>43/32/11/11</td><td class='g'>.287</td></tr><tr><td>9/19</td><td>@ CIN</td><td>5.0</td><td>2</td><td>4</td><td>2</td><td>0</td><td>71</td><td>93.7</td><td>10.3</td><td>49/38/4/8</td><td class='y'>.357</td></tr><tr><td>9/13</td><td>vs PIT</td><td>5.0</td><td>7</td><td>3</td><td>2</td><td>0</td><td>88</td><td>92.2</td><td>10.7</td><td>48/36/7/6</td><td class='y'>.331</td></tr><tr><td>9/7</td><td>@ MIL</td><td>7.0</td><td>5</td><td>7</td><td>2</td><td>0</td><td>100</td><td>92.5</td><td>11.0</td><td>33/37/16/12</td><td class='g'>.240</td></tr><tr><td>9/1</td><td>vs MIL</td><td>5.0</td><td>7</td><td>3</td><td>1</td><td>0</td><td>97</td><td>92.8</td><td>10.0</td><td>34/28/14/14</td><td class='g'>.265</td></tr><tr><td>8/26</td><td>@ AZ</td><td>5.2</td><td>3</td><td>5</td><td>2</td><td>1</td><td>94</td><td>93.5</td><td>11.7</td><td>43/31/13/14</td><td class='y'>.312</td></tr><tr><td>8/21</td><td>@ SEA</td><td>6.0</td><td>6</td><td>3</td><td>2</td><td>1</td><td>86</td><td>92.7</td><td>11.9</td><td>36/21/23/19</td><td class='y'>.352</td></tr><tr><td>8/15</td><td>vs STL</td><td>5.0</td><td>5</td><td>2</td><td>3</td><td>4</td><td>97</td><td>92.7</td><td>10.2</td><td>44/23/8/24</td><td class='r'>.465</td></tr><tr><td>8/9</td><td>@ KC</td><td>6.2</td><td>5</td><td>3</td><td>3</td><td>1</td><td>98</td><td>92.5</td><td>10.5</td><td>47/21/11/15</td><td class='r'>.370</td></tr><tr><td>8/3</td><td>vs LAD</td><td>6.0</td><td>9</td><td>3</td><td>1</td><td>2</td><td>92</td><td>92.7</td><td>10.5</td><td>45/16/15/24</td><td class='r'>.413</td></tr><tr><td>7/29</td><td>@ STL</td><td>7.0</td><td>4</td><td>5</td><td>2</td><td>0</td><td>89</td><td>93.3</td><td>10.6</td><td>38/29/16/16</td><td class='g'>.290</td></tr><tr><td>7/24</td><td>@ PIT</td><td>6.2</td><td>7</td><td>4</td><td>3</td><td>0</td><td>97</td><td>92.3</td><td>11.1</td><td>45/32/15/7</td><td class='g'>.248</td></tr><tr><td>7/18</td><td>vs MIN</td><td>6.0</td><td>3</td><td>4</td><td>1</td><td>1</td><td>91</td><td>92.8</td><td>10.2</td><td>38/26/20/15</td><td class='g'>.269</td></tr><tr><td>7/12</td><td>@ CIN</td><td>6.1</td><td>6</td><td>3</td><td>1</td><td>1</td><td>92</td><td>92.6</td><td>11.6</td><td>34/29/25/12</td><td class='r'>.407</td></tr><tr><td>7/7</td><td>@ BAL</td><td>6.0</td><td>3</td><td>7</td><td>2</td><td>0</td><td>93</td><td>93.5</td><td>11.9</td><td>45/23/22/11</td><td class='g'>.291</td></tr><tr class=sd><td>6/30</td><td>vs SD</td><td>5.0</td><td>8</td><td>2</td><td>0</td><td>2</td><td>76</td><td>93.4</td><td>10.5</td><td>50/29/9/12</td><td class='r'>.397</td></tr><tr><td>6/25</td><td>@ NYM</td><td>4.2</td><td>4</td><td>4</td><td>4</td><td>0</td><td>76</td><td>92.8</td><td>11.7</td><td>47/20/24/9</td><td class='y'>.323</td></tr><tr><td>5/3</td><td>vs AZ</td><td>6.0</td><td>4</td><td>5</td><td>1</td><td>1</td><td>94</td><td>91.8</td><td>12.0</td><td>37/37/19/6</td><td class='y'>.322</td></tr><tr class=sd><td>4/27</td><td>@ SD</td><td>4.0</td><td>8</td><td>4</td><td>2</td><td>0</td><td>91</td><td>92.4</td><td>14.3</td><td>54/27/9/10</td><td class='y'>.360</td></tr><tr><td>4/22</td><td>vs PHI</td><td>4.2</td><td>5</td><td>5</td><td>0</td><td>0</td><td>84</td><td>92.6</td><td>13.3</td><td>43/30/17/6</td><td class='g'>.255</td></tr><tr><td>4/1</td><td>vs LAA</td><td>5.1</td><td>2</td><td>10</td><td>2</td><td>0</td><td>98</td><td>92.2</td><td>13.3</td><td>58/31/2/9</td><td class='g'>.186</td></tr><tr><td>3/26</td><td>vs WSH</td><td>3.1</td><td>6</td><td>7</td><td>1</td><td>1</td><td>63</td><td>93.3</td><td>13.4</td><td>67/13/13/8</td><td class='r'>.505</td></tr>
+ </table></div>
+ <p class="note" style="margin-top:8px">Padres starts highlighted. He missed May–June with the knee.</p>
 </section>
 
-<!-- ================= GAME PLAN ================= -->
-<section id="plan">
-  <div class="wrap">
-    <h2>Game Plan</h2>
-    <p class="lede">The whole start in six calls.</p>
-    <div class="plan">
-      <div class="prow"><span class="pico disp">Tunnel</span><p><strong>Fastball up establishes the line, changeup finishes below it.</strong> Against a seven-righty lineup that includes three genuine changeup victims (Valdez, Ozuna, N. Gonzales), the FF/CH pairing is the identity of the night. Target 30–35% changeup usage to righties. The bat paths make it structural: <strong>Valdez (23°), Ozuna (24°), Lowe (25°) and Gonzales (19°) all swing steeply uphill at offspeed</strong> — the 3.6" ride changeup lives under every one of those planes.</p></div>
-      <div class="prow"><span class="pico disp">Steal</span><p><strong>First-pitch curveball early and often.</strong> It's already 25% of first pitches to righties and this lineup's bottom third can't touch it. Bank 0-1, save the fastball's bullets for when they matter.</p></div>
-      <div class="prow warn"><span class="pico disp">Red Box</span><p><strong>The Valdez rule overrides everything.</strong> Changeups down-away and four-seams above the eyes. No sliders — not to steal a strike, not 0-2, not ever. If first base is open in a leverage spot, four wide ones is the right pitch.</p></div>
-      <div class="prow"><span class="pico disp">Flip</span><p><strong>Second time through, breaking-first sequencing.</strong> Fastball contact quality jumps 8 mph on the second look. Innings 3–5: open at-bats with curve/change, use the four-seam as the surprise up. The velocity is back (93.4+ in recent starts) — it plays best when it's least expected.</p></div>
-      <div class="prow"><span class="pico disp">Expand</span><p><strong>The bottom third and bench get nothing to hit.</strong> Cook, Davis, Mangum and Flores combine for extreme chase and near-zero walks. Every 0-0 to slots 8–9 can start off the plate. Free outs live there — take all of them.</p></div>
-      <div class="prow"><span class="pico disp">Elevate</span><p><strong>The high four-seam is a targeted weapon, not a blanket one.</strong> Ladder it to the steep swings — Valdez (11° vs FB), Lowe (10°), Cook (9°), Davis (10°) — where 12.4" of carry beats the uphill path. Skip it against the flat swings: Triolo (2°), Mangum (-4°), N. Gonzales (4°) and Reynolds (1°) cover the top of the zone with the barrel, and elevating to them just spends pitches.</p></div>
-      <div class="prow"><span class="pico disp">Wall</span><p><strong>Respect the Clemente Wall with the lefty bats.</strong> Lowe and O'Hearn's pull-side power plays to PNC's short right field. Sliders down-in and ladders up beat them; anything middle-in on a line is a souvenir. The left-center notch is the friend — let righties hit the big part of the park.</p></div>
-    </div>
-  </div>
+<section id="plan" hidden>
+ <h2>Game plan</h2>
+ <div class="plan">
+  <div class="panel"><h3>Mix vs this lineup</h3><ul>
+   <li>Four-seam ~40%, at the letters or above. Nothing at the belt.</li>
+   <li>Changeup ~35% to righties, finishing below the knees. It is his best pitch against this lineup.</li>
+   <li>Curveball ~15%, mostly for strike one and as a steal pitch to France and Hays.</li>
+   <li>Slider ~10%, aimed at Merrill and Cronenworth, away. Keep it off Machado's inner half.</li>
+  </ul></div>
+  <div class="panel"><h3>Times through the order</h3><ul>
+   <li>Expect a short leash: the likely plan is twice through, around 18 batters.</li>
+   <li>His 2026 xwOBA barely moves by pass (.327 / .339 / .325), so there is no cliff to fear on a second look. The concern is Tatis and Machado seeing him a second time.</li>
+   <li>Second time through: flip the first-pitch pattern. Changeup below the knees for strike one to Tatis and Machado instead of the curve.</li>
+  </ul></div>
+  <div class="panel"><h3>First inning</h3><ul>
+   <li>Tatis: curve or changeup below the knees. No first-pitch fastball in the zone. He homered to lead off the 6/30 game.</li>
+   <li>Taylor: attack with the fastball at the letters. Softest bat on the roster.</li>
+   <li>Machado: fastball up, changeup down, nothing at the belt. Don't let him hit with a runner on in a hitter's count.</li>
+  </ul></div>
+  <div class="panel"><h3>Leverage spots</h3><ul>
+   <li>Runner on, Machado or France up, count 2-0 / 2-1 / 3-1: changeup below the knees. A walk is better than a middle fastball.</li>
+   <li>Merrill with two strikes: fastball above the zone (67% whiff vs LHP) or a slider away.</li>
+   <li>Bottom third (Bogaerts, Cronenworth, Campusano): take the free strike one, then expand. These are the outs to get quickly.</li>
+  </ul></div>
+ </div>
+ <div class="gamebar">
+  <h3>Gamebar</h3>
+  <p>Fastball at the letters or above. Changeup below the knees. Curveball for strike one. In a hitter's count, Tatis, Machado, and France get nothing in the zone.</p>
+ </div>
 </section>
 
-<footer>
-  <div class="wrap" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;padding:0">
-    <span>NO BRAND BASEBALL · GAMEDAY INTEL</span>
-    <span>BOYD vs PIT · 07.24.2026 · PNC PARK</span>
-  </div>
-</footer>
-
+<footer>No Brand Baseball Analytics · Prepared 9/29/2026</footer>
+</div>
 
 <script>
 (function(){
-  var tabs = document.querySelectorAll('.tab');
-  var secs = document.querySelectorAll('section');
-  function show(id){
-    tabs.forEach(function(t){
-      var on = t.dataset.t === id;
-      t.classList.toggle('active', on);
-      t.setAttribute('aria-selected', on);
-    });
-    secs.forEach(function(s){ s.classList.toggle('active', s.id === id); });
-    window.scrollTo({top:0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'});
-  }
-  tabs.forEach(function(t){ t.addEventListener('click', function(){ show(t.dataset.t); }); });
-  if (location.hash) {
-    var id = location.hash.slice(1);
-    if (document.getElementById(id)) show(id);
-  }
+ var tabs=document.querySelectorAll('nav button');
+ function show(id){
+  tabs.forEach(function(b){b.setAttribute('aria-selected',b.dataset.t===id?'true':'false')});
+  document.querySelectorAll('section').forEach(function(s){s.hidden=s.id!==id});
+  window.scrollTo(0,0);
+ }
+ tabs.forEach(function(b){b.addEventListener('click',function(){show(b.dataset.t)})});
+ var h=(location.hash||'').slice(1); if(h&&document.getElementById(h)) show(h);
 })();
 </script>
 </body>
